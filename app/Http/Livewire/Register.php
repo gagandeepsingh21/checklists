@@ -44,6 +44,7 @@ class Register extends Component implements HasForms
                     ->email()
                     ->required()
                     ->maxLength(50)
+                    ->endsWith(['strathmore.edu'])
                     ->unique(User::class),
                     TextInput::make('password')
                     ->label('Password')
