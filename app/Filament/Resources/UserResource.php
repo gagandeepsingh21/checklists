@@ -10,6 +10,8 @@ use Filament\Resources\Table;
 use Filament\Resources\Resource;
 use Filament\Resources\Pages\Page;
 use Filament\Forms\Components\Card;
+use Illuminate\Support\Facades\Hash;
+use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Actions\DeleteAction;
@@ -43,25 +45,23 @@ class UserResource extends Resource
                     ->maxLength(255),
                 TextInput::make('password')
                     ->password()
-                    ->maxLength(255)
-                    ->dehydrateStateUsing(static fn (null|string $state): null|string =>
-                            filled($state) ? Hash::make($state): null,
-                        )->required(static fn (Page $livewire): bool =>
-                            $livewire instanceof CreateUser,
-                        )->dehydrated(static fn (null|string $state): bool =>
-                            filled($state),
-                        )->label(static fn (Page $livewire): string =>
-                            ($livewire instanceof EditUser) ? 'New Password' : 'Password'
-                        ),
-                TextInput::make('role_id')
-                    ->required()
-                    ->disabled()
-                    ->maxLength(255),
-                // MultiSelect::make('roles')
-                //     ->relationship('roles','name')
-                //     ->helperText('Only Select One!')
-                //     ->required()
-                //     ->preload(),
+                    ->required(fn (Page $livewire): bool => $livewire instanceof createUser)
+                    ->minLength(8)
+                    ->same('passwordConfirmation')
+                    ->dehydrated(fn ($state) => filled($state))
+                    ->dehydrateStateUsing(fn ($state) => Hash::make($state)),
+                TextInput::make('passwordConfirmation')
+                    ->password()
+                    ->label('Password Confirmation')
+                    ->required(fn (Page $livewire): bool => $livewire instanceof createUser)
+                    ->minLength(8)
+                    ->dehydrated(false),
+                Select::make('role_id')
+                    ->options([
+                        'admin' => ' Admin',
+                        'managers' => 'Managers',
+                    ])
+                    ->required(),
                 ])
             ]);
     }
@@ -70,9 +70,15 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('role_id'),
-                Tables\Columns\TextColumn::make('email'),
+                Tables\Columns\TextColumn::make('name')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('role_id')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('email')
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('deleted_at')
                     ->dateTime('d-m-Y')
                     ->sortable()

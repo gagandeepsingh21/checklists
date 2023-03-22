@@ -1,9 +1,10 @@
 <x-filament-breezy::auth-card action="authenticate">
 
+
+    <img src="{{url('/images/logo.png')}}" alt="Image" style="height:60px; margin-left:27%;"/>
     <div class="w-full flex justify-center">
         <x-filament::brand />
     </div>
-
     <div>
         <h2 class="font-bold tracking-tight text-center text-2xl">
             {{ __('filament::login.heading') }}

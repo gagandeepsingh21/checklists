@@ -2,6 +2,8 @@
     <!-- <div class="w-full flex justify-center">
         <x-filament::brand />
     </div> -->
+    <img src="{{url('/images/banner-black.png')}}" alt="Image" style="height:60px; margin-left:27%;"/>
+
     <div>
         <h2 class="font-bold tracking-tight text-center text-2xl">
             {{ __('filament-breezy::default.registration.heading') }}
