@@ -21,9 +21,14 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+    public function checklists()
+    {
+        return $this->hasMany(Checklist::class);
+    }
     protected $fillable = [
         'name',
         'email',
+        'phone_no',
         'password',
         'role_id',
     ];

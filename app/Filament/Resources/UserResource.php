@@ -43,6 +43,9 @@ class UserResource extends Resource
                     ->email()
                     ->required()
                     ->maxLength(255),
+                TextInput::make('phone_no')
+                    ->numeric()
+                    ->required(),
                 TextInput::make('password')
                     ->password()
                     ->required(fn (Page $livewire): bool => $livewire instanceof createUser)
@@ -77,6 +80,9 @@ class UserResource extends Resource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('phone_no')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('deleted_at')

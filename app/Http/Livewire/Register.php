@@ -35,18 +35,23 @@ class Register extends Component implements HasForms
     protected function getFormSchema(): array
     {
         return [
-                    TextInput::make('name')
+                TextInput::make('name')
                     ->label('Name')
                     ->required()
                     ->maxLength(50),
-                    TextInput::make('email')
+                TextInput::make('email')
                     ->label('Email Address')
                     ->email()
                     ->required()
                     ->maxLength(50)
                     ->endsWith(['strathmore.edu'])
                     ->unique(User::class),
-                    TextInput::make('password')
+                TextInput::make('phone_no')
+                    ->label('Phone no')
+                    ->numeric()
+                    ->required()
+                    ->maxLength(50),
+                TextInput::make('password')
                     ->label('Password')
                     ->password()
                     ->required()
@@ -54,7 +59,7 @@ class Register extends Component implements HasForms
                     ->minLength(8)
                     ->same('passwordConfirmation')
                     ->dehydrateStateUsing(fn ($state) => Hash::make($state)),
-                    TextInput::make('passwordConfirmation')
+                TextInput::make('passwordConfirmation')
                     ->label('Confirm Password')
                     ->password()
                     ->required()

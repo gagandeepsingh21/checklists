@@ -40,7 +40,6 @@ class RoleResource extends Resource
                             ->relationship('permissions','name')
                             ->preload()
                             ->required(),
-
                     ])
             ]);
     }
