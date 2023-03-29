@@ -28,8 +28,12 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
-    protected static ?string $navigationGroup = 'Admin Management';
+    protected static ?string $navigationGroup = 'Profile Management';
 
+    public static function getEloquentQuery(): Builder{
+
+        return static::getModel()::query()->where('id', auth()->id());
+    }
     public static function form(Form $form): Form
     {
         return $form
@@ -85,10 +89,10 @@ class UserResource extends Resource
                 TextColumn::make('phone_no')
                     ->sortable()
                     ->searchable(),
-                TextColumn::make('deleted_at')
-                    ->dateTime('d-m-Y')
-                    ->sortable()
-                    ->searchable(),
+                // TextColumn::make('deleted_at')
+                //     ->dateTime('d-m-Y')
+                //     ->sortable()
+                //     ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime('d-m-Y')
                     ->sortable()
@@ -96,14 +100,15 @@ class UserResource extends Resource
                 
             ])
             ->filters([
-                TrashedFilter::make(),
+                
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                DeleteAction::make(),
+               
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                
             ]);
     }
     
@@ -120,6 +125,7 @@ class UserResource extends Resource
             'index' => Pages\ListUsers::route('/'),
             'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
+            'view' => Pages\ViewUser::route('/{record}/view'),
         ];
     }    
 }

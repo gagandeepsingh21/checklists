@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Checklist extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -16,7 +17,7 @@ class Checklist extends Model
         'faults_identified' => 'array',
     ];
     protected $fillable = [
-        'user_id',
+       'user_id',
        'building_name',
        'class_name',
        'faults_identified',
