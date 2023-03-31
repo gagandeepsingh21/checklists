@@ -25,6 +25,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(Checklist::class);
     }
+        // Define a relation between User and Role models
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
     protected $fillable = [
         'name',
         'email',

@@ -9,6 +9,7 @@ use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Filament\Resources\Resource;
 use Filament\Resources\Pages\Page;
+use Spatie\Permission\Models\Role;
 use Filament\Forms\Components\Card;
 use Illuminate\Support\Facades\Hash;
 use Filament\Forms\Components\Select;
@@ -30,10 +31,11 @@ class UserResource extends Resource
 
     protected static ?string $navigationGroup = 'Profile Management';
 
-    public static function getEloquentQuery(): Builder{
+    // public static function getEloquentQuery(): Builder{
 
-        return static::getModel()::query()->where('id', auth()->id());
-    }
+    //     return static::getModel()::query()->where('id', auth()->id());
+    // }
+    
     public static function form(Form $form): Form
     {
         return $form
@@ -64,11 +66,9 @@ class UserResource extends Resource
                     ->minLength(8)
                     ->dehydrated(false),
                 Select::make('role_id')
-                    ->options([
-                        'admin' => ' Admin',
-                        'managers' => 'Managers',
-                    ])
+                    ->options(Role::query()->pluck('name'))
                     ->required(),
+                
                 ])
             ]);
     }
