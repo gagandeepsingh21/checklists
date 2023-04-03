@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
+use App\Models\Buildings;
 use App\Models\Checklist;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
@@ -22,6 +23,8 @@ use Filament\Forms\Components\MarkdownEditor;
 use App\Filament\Resources\ChecklistResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\ChecklistResource\RelationManagers;
+use App\Models\Classes;
+use App\Models\Faults;
 
 class ChecklistResource extends Resource
 {
@@ -34,7 +37,7 @@ class ChecklistResource extends Resource
 
     public static function form(Form $form): Form
     {
-        
+
         return $form
             ->schema([
                     Card::make()
@@ -43,87 +46,18 @@ class ChecklistResource extends Resource
                             ->default(auth()->id()),
                             
                         Select::make('building_name')
-                            ->options([
-                                'Central Building' => 'Central Building',
-                                'MSB and Oval Building' => 'MSB and Oval Building',
-                                'STMB and SBS' => 'STMB and SBS',
-                                'STC' => 'STC',
-                            ])
+                            ->options(Buildings::all()->pluck('building_name', 'building_name'))
                             ->searchable()
+                            ->reactive()
                             ->required(),
+
                         Select::make('class_name')
-                            ->options([
-                                'LT1' => 'LT1',
-                                'LT2' => 'LT2',
-                                'LT3' => 'LT3',
-                                'LT4' => 'LT4',
-                                'LT5' => 'LT5',
-                                'LT6' => 'LT6',
-                                'ROOM B' => 'ROOM B',
-                                'ROOM 2' => 'ROOM 2',
-                                'ROOM 3' => 'ROOM 3',
-                                'ROOM 4' => 'ROOM 4',
-                                'ROOM 10' => 'ROOM 10',
-                                'ROOM 11' => 'ROOM 11',
-                                'ROOM 12' => 'ROOM 12',
-                                'ROOM 23' => 'ROOM 23',
-                                'ROOM 25' => 'ROOM 25',
-                                'ROOM 26' => 'ROOM 26',
-                                'MSB 1' => 'MSB 1',
-                                'MSB 2' => 'MSB 2',
-                                'MSB 3' => 'MSB 3',
-                                'MSB 4' => 'MSB 4',
-                                'MSB 5' => 'MSB 5',
-                                'MSB 6' => 'MSB 6',
-                                'MSB 7' => 'MSB 7',
-                                'MSB 8' => 'MSB 8',
-                                'MSB 9' => 'MSB 9',
-                                'MSB 10' => 'MSB 10',
-                                'MSB 11' => 'MSB 11',
-                                'MSB 12' => 'MSB 12',
-                                'MSB 13' => 'MSB 13',
-                                'MSB 14' => 'MSB 14',
-                                'SHABA' => 'SHABA',
-                                'ZUMARIDI' => 'ZUMARIDI',
-                                'B-01' => 'B-01',
-                                'B-02' => 'B-02',
-                                'B-03' => 'B-03',
-                                'B-04' => 'B-04',
-                                'GF-01' => 'GF-01',
-                                'GF-02' => 'GF-02',
-                                'F1-02' => 'F1-02',
-                                'F1-03' => 'F1-03',
-                                'F1-04' => 'F1-04',
-                                'F1-05' => 'F1-05',
-                                'F2-01' => 'F2-01',
-                                'F2-02' => 'F2-02',
-                                'F2-03' => 'F2-03',
-                                'F2-04' => 'F2-04',
-                                'F2-05' => 'F2-05',
-                                'SBS 1' => 'SBS 1',
-                                'SBS 2' => 'SBS 2',
-                            ])
-                            ->searchable()
-                            ->preload()
+                            ->options(fn($get) => Classes::join('buildings', 'classes.building_id', '=', 'buildings.id')->where('building_name', $get('building_name'))->pluck('class_name', 'class_name'))
+                            ->visible(fn($get) => $get('building_name') !== null)
                             ->required(),
                         Select::make('faults_identified')
                             ->multiple()
-                            ->options([
-                                'Sound(Amp & Speakers)' => 'Sound(Amp & Speakers)',
-                                'Alignment & Clarity' => 'Alignment & Clarity',
-                                'Screen' => 'Screen',
-                                'Screen Controller' => 'Screen Controller',
-                                'Browser Ops/ Remote' => 'Browser Ops/ Remote',
-                                'Network' => 'Network',
-                                'Internet' => 'Internet',
-                                'Anti-virus' => 'Anti-virus',
-                                'PC & Projector Cabinet Security' => 'PC & Projector Cabinet Security',
-                                'AV Guideline Sheet' => 'AV Guideline Sheet',
-                                'Clock' => 'Wireless & APs',
-                                'Potrait' => 'Potrait',
-                                'Light' => 'Light',
-                                'Door' => 'Door',
-                            ])
+                            ->options(Faults::all()->pluck('faults_identified', 'faults_identified'))
                             ->searchable()
                             ->required(),
                         MarkdownEditor::make('message')
@@ -137,7 +71,22 @@ class ChecklistResource extends Resource
                     ])
             ]);
     }
-
+    // [
+    //     'Sound(Amp & Speakers)' => 'Sound(Amp & Speakers)',
+    //     'Alignment & Clarity' => 'Alignment & Clarity',
+    //     'Screen' => 'Screen',
+    //     'Screen Controller' => 'Screen Controller',
+    //     'Browser Ops/ Remote' => 'Browser Ops/ Remote',
+    //     'Network' => 'Network',
+    //     'Internet' => 'Internet',
+    //     'Anti-virus' => 'Anti-virus',
+    //     'PC & Projector Cabinet Security' => 'PC & Projector Cabinet Security',
+    //     'AV Guideline Sheet' => 'AV Guideline Sheet',
+    //     'Clock' => 'Wireless & APs',
+    //     'Potrait' => 'Potrait',
+    //     'Light' => 'Light',
+    //     'Door' => 'Door',
+    // ]
     public static function table(Table $table): Table
     {
         return $table

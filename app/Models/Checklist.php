@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Classes;
+use App\Models\Buildings;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,6 +14,14 @@ class Checklist extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function classes()
+    {
+        return $this->belongsTo(Classes::class);
+    }
+    public function building()
+    {
+        return $this->belongsTo(Buildings::class);
     }
     protected $options = [
         'faults_identified' => 'array',

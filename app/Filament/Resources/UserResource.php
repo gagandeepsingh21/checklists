@@ -31,10 +31,10 @@ class UserResource extends Resource
 
     protected static ?string $navigationGroup = 'Profile Management';
 
-    // public static function getEloquentQuery(): Builder{
+    public static function getEloquentQuery(): Builder{
 
-    //     return static::getModel()::query()->where('id', auth()->id());
-    // }
+        return static::getModel()::query()->where('id', auth()->id());
+    }
     
     public static function form(Form $form): Form
     {

@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Classes;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 
 class Buildings extends Model
 {
@@ -12,4 +14,8 @@ class Buildings extends Model
         'user_id',
         'building_name', 
      ];
+
+     public function classes() {
+        return $this->hasMany(Classes::class);
+     }
 }

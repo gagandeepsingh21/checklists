@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
+use App\Models\Faults;
+use App\Models\Classes;
 use App\Models\Buildings;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
@@ -12,26 +14,26 @@ use Filament\Forms\Components\Hidden;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\BuildingsResource\Pages;
+use Filament\Forms\Components\BelongsToSelect;
+use App\Filament\Resources\FaultsResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\BuildingsResource\RelationManagers;
+use App\Filament\Resources\FaultsResource\RelationManagers;
 
-class BuildingsResource extends Resource
+class FaultsResource extends Resource
 {
-    protected static ?string $model = Buildings::class;
+    protected static ?string $model = Faults::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
-
-    protected static ?string $navigationGroup = 'Checklist';
     
+    protected static ?string $navigationGroup = 'Checklist';
+
     public static function form(Form $form): Form
     {
+        $classes = Classes::pluck('class_name', 'id')->toArray();
         return $form
             ->schema([
-                Hidden::make('user_id')
-                            ->default(auth()->id()),
-                TextInput::make('building_name')
-                            ->required(),
+                Hidden::make('user_id')->default(auth()->id()),
+                TextInput::make('faults_identified')->required()->unique(),
             ]);
     }
 
@@ -39,11 +41,8 @@ class BuildingsResource extends Resource
     {
         return $table
             ->columns([
-            TextColumn::make('id')
-                ->sortable(),
-            TextColumn::make('building_name')
-                ->sortable()
-                ->searchable(),
+            TextColumn::make('id')->sortable(),
+            TextColumn::make('faults_identified')->sortable()->searchable(),
             ])
             ->filters([
                 //
@@ -66,9 +65,9 @@ class BuildingsResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListBuildings::route('/'),
-            'create' => Pages\CreateBuildings::route('/create'),
-            'edit' => Pages\EditBuildings::route('/{record}/edit'),
+            'index' => Pages\ListFaults::route('/'),
+            'create' => Pages\CreateFaults::route('/create'),
+            'edit' => Pages\EditFaults::route('/{record}/edit'),
         ];
     }    
 }

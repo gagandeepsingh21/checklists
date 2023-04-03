@@ -28,6 +28,8 @@ class ClassesResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
+    protected static ?string $navigationGroup = 'Checklist';
+    
     public static function form(Form $form): Form
     {
         $buildings = Buildings::pluck('building_name', 'id')->toArray();
@@ -46,7 +48,7 @@ class ClassesResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id')->sortable(),
+            TextColumn::make('id')->sortable(),
             TextColumn::make('building.building_name', 'Buildings')->sortable(),
             TextColumn::make('class_name')->sortable()->searchable(),
             ])
