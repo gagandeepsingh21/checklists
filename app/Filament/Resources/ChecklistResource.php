@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
+use App\Models\Faults;
+use App\Models\Classes;
 use App\Models\Buildings;
 use App\Models\Checklist;
 use Filament\Resources\Form;
@@ -23,8 +25,7 @@ use Filament\Forms\Components\MarkdownEditor;
 use App\Filament\Resources\ChecklistResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\ChecklistResource\RelationManagers;
-use App\Models\Classes;
-use App\Models\Faults;
+use App\Filament\Resources\ChecklistResource\Widgets\StatisticsOverview;
 
 class ChecklistResource extends Resource
 {
@@ -136,6 +137,12 @@ class ChecklistResource extends Resource
             //
         ];
     }
+    public static function getWidgets(): array
+{
+    return [
+        StatisticsOverview::class
+    ];
+}
     
     public static function getPages(): array
     {

@@ -1,34 +1,21 @@
 <?php
 
-namespace App\Filament\Widgets;
+namespace App\Filament\Resources\ChecklistResource\Widgets;
 
 use Illuminate\Support\Facades\DB;
 use Filament\Widgets\StatsOverviewWidget\Card;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 
-class StatsOverview extends BaseWidget
+class StatisticsOverview extends BaseWidget
 {
-    
-    protected static ?string $pollingInterval = '10s';
-    
     protected function getCards(): array
     {
-        $totalUsers = DB::table('users')->count();
-        $totalbuildings = DB::table('buildings')->count();
-        $totalclasses = DB::table('classes')->count();
+        
+            
         $completedRequests = DB::table('checklists')->where('status', 'solved')->count();
         $pendingRequests = DB::table('checklists')->where('status', 'pending')->count();
         $totalRequests = $completedRequests + $pendingRequests;
         return [
-        Card::make('Total Users', $totalUsers)
-            ->description($totalUsers. ' ' .'Users')
-            ->descriptionIcon('heroicon-s-trending-up'),
-        Card::make('Total Buildings', $totalbuildings)
-            ->description($totalbuildings. ' ' .'Buildings')
-            ->descriptionIcon('heroicon-s-trending-up'),
-         Card::make('Total Classes', $totalclasses)
-            ->description($totalclasses. ' ' .'Classes')
-            ->descriptionIcon('heroicon-s-trending-up'),
         Card::make('Total Requests', $totalRequests)
             ->description($totalRequests. ' ' .'Requests')
             ->descriptionIcon('heroicon-s-trending-up')
@@ -45,5 +32,6 @@ class StatsOverview extends BaseWidget
             ->chart([7, 2, 10, 3, 15, 4, 17])
             ->color('danger'),
         ];
+        
     }
 }

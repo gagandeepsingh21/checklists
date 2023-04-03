@@ -13,6 +13,7 @@ use Spatie\Permission\Models\Role;
 use Filament\Forms\Components\Card;
 use Illuminate\Support\Facades\Hash;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Checkbox;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Actions\DeleteAction;
@@ -65,9 +66,9 @@ class UserResource extends Resource
                     ->required(fn (Page $livewire): bool => $livewire instanceof createUser)
                     ->minLength(8)
                     ->dehydrated(false),
-                Select::make('role_id')
-                    ->options(Role::query()->pluck('name'))
-                    ->required(),
+                Select::make('roles')
+                ->options(Role::query()->pluck('name', 'id'))
+                ->required(),
                 
                 ])
             ]);

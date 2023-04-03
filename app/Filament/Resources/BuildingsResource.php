@@ -11,6 +11,7 @@ use Filament\Resources\Resource;
 use Filament\Forms\Components\Hidden;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Actions\DeleteAction;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\BuildingsResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -20,7 +21,7 @@ class BuildingsResource extends Resource
 {
     protected static ?string $model = Buildings::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-home';
 
     protected static ?string $navigationGroup = 'Checklist';
     
@@ -31,7 +32,8 @@ class BuildingsResource extends Resource
                 Hidden::make('user_id')
                             ->default(auth()->id()),
                 TextInput::make('building_name')
-                            ->required(),
+                            ->required()
+                            ->unique(),
             ]);
     }
 
@@ -50,6 +52,7 @@ class BuildingsResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

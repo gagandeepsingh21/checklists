@@ -15,6 +15,7 @@ use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Actions\DeleteAction;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\BelongsToSelect;
 use App\Filament\Resources\ClassesResource\Pages;
@@ -26,7 +27,7 @@ class ClassesResource extends Resource
 {
     protected static ?string $model = Classes::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-book-open';
 
     protected static ?string $navigationGroup = 'Checklist';
     
@@ -40,7 +41,7 @@ class ClassesResource extends Resource
                 BelongsToSelect::make('building_id')
                     ->options($buildings)
                     ->required(),
-                TextInput::make('class_name')->required(),
+                TextInput::make('class_name')->required()->unique(),
             ]);
     }
 
@@ -57,6 +58,7 @@ class ClassesResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

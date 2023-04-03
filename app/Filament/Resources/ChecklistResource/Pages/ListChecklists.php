@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources\ChecklistResource\Pages;
 
-use App\Filament\Resources\ChecklistResource;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\ListRecords;
+use App\Filament\Resources\ChecklistResource;
+use App\Filament\Resources\ChecklistResource\Widgets\StatisticsOverview;
 
 class ListChecklists extends ListRecords
 {
@@ -14,6 +15,12 @@ class ListChecklists extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+        ];
+    }
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            StatisticsOverview::class,
         ];
     }
 }
