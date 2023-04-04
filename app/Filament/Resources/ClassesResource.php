@@ -50,7 +50,7 @@ class ClassesResource extends Resource
         return $table
             ->columns([
             TextColumn::make('id')->sortable(),
-            TextColumn::make('building.building_name', 'Buildings')->sortable(),
+            TextColumn::make('building.building_name', 'Buildings')->sortable()->searchable(),
             TextColumn::make('class_name')->sortable()->searchable(),
             ])
             ->filters([

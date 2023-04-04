@@ -9,15 +9,15 @@ module.exports = {
         extend: {
             colors: {
                 danger: colors.rose,
-                primary: colors.green,
-                success: colors.blue,
+                primary: colors.blue,
+                success: colors.green,
                 warning: colors.purple,
             },
         },
     },
     plugins: [
         require('@tailwindcss/forms'),
-        require('@tailwindcss/typography'),
+    require('@tailwindcss/typography')
     ],
     
 }

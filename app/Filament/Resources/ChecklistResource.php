@@ -109,7 +109,11 @@ class ChecklistResource extends Resource
                 TextColumn::make('status')
                     ->sortable()
                     ->searchable(),
-                TextColumn::make('deleted_at')
+                TextColumn::make('created_at')
+                    ->dateTime('d-m-Y')
+                    ->sortable()
+                    ->searchable(),
+                    TextColumn::make('deleted_at')
                     ->dateTime('d-m-Y')
                     ->sortable()
                     ->searchable(),

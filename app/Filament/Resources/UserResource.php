@@ -30,12 +30,12 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
-    protected static ?string $navigationGroup = 'Profile Management';
+    protected static ?string $navigationGroup = 'User Management';
 
-    public static function getEloquentQuery(): Builder{
+    // public static function getEloquentQuery(): Builder{
 
-        return static::getModel()::query()->where('id', auth()->id());
-    }
+    //     return static::getModel()::query()->where('id', auth()->id());
+    // }
     
     public static function form(Form $form): Form
     {
@@ -67,9 +67,7 @@ class UserResource extends Resource
                     ->minLength(8)
                     ->dehydrated(false),
                 Select::make('roles')
-                ->options(Role::query()->pluck('name', 'id'))
-                ->required(),
-                
+                    ->options(Role::query()->pluck('name', 'id'))
                 ])
             ]);
     }
