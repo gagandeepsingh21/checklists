@@ -13,10 +13,13 @@ use Filament\Resources\Resource;
 use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Actions\DeleteAction;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Actions\RestoreAction;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Forms\Components\BelongsToSelect;
 use App\Filament\Resources\ClassesResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -52,13 +55,16 @@ class ClassesResource extends Resource
             TextColumn::make('id')->sortable(),
             TextColumn::make('building.building_name', 'Buildings')->sortable()->searchable(),
             TextColumn::make('class_name')->sortable()->searchable(),
+            TextColumn::make('deleted_at')->sortable()->searchable(),
             ])
             ->filters([
-                //
+                
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 DeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
@@ -78,6 +84,7 @@ class ClassesResource extends Resource
             'index' => Pages\ListClasses::route('/'),
             'create' => Pages\CreateClasses::route('/create'),
             'edit' => Pages\EditClasses::route('/{record}/edit'),
+            'view' => Pages\ViewClasses::route('/{record}/view')
         ];
     }    
 }

@@ -18,6 +18,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Actions\DeleteAction;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Filters\TrashedFilter;
@@ -106,14 +107,21 @@ class ChecklistResource extends Resource
                 TextColumn::make('message')
                     ->sortable()
                     ->searchable(),
-                TextColumn::make('status')
+                BadgeColumn::make('status')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->color(static function ($state): string {
+                        if ($state === 'Pending') {
+                            return 'danger';
+                        }else if ($state === 'Solved'){
+                            return 'success';
+                        }
+                    }),
                 TextColumn::make('created_at')
                     ->dateTime('d-m-Y')
                     ->sortable()
                     ->searchable(),
-                    TextColumn::make('deleted_at')
+                TextColumn::make('deleted_at')
                     ->dateTime('d-m-Y')
                     ->sortable()
                     ->searchable(),
