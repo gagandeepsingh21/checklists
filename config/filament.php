@@ -90,7 +90,7 @@ return [
     'auth' => [
         'guard' => env('FILAMENT_AUTH_GUARD', 'web'),
         'pages' => [
-            'login' =>  \JeffGreco13\FilamentBreezy\Http\Livewire\Auth\Login::class,
+            'login' =>  \App\Http\Livewire\Login::class,
         ],
     ],
     

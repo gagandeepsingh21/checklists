@@ -79,7 +79,6 @@ class CheckListChart extends ApexChartWidget
             
         ];
     }
-
     protected function getFilters(): ?array
     {
         return [

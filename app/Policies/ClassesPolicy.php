@@ -3,10 +3,10 @@
 namespace App\Policies;
 
 use App\Models\User;
-use Spatie\Permission\Models\Permission;
+use App\Models\Classes;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class PermissionPolicy
+class ClassesPolicy
 {
     use HandlesAuthorization;
 
@@ -18,19 +18,19 @@ class PermissionPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->can('view_any_permission');
+        return $user->can('view_any_classes');
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \Spatie\Permission\Models\Permission  $permission
+     * @param  \App\Models\Classes  $classes
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Permission $permission)
+    public function view(User $user, Classes $classes)
     {
-        return $user->can('view_permission');
+        return $user->can('view_classes');
     }
 
     /**
@@ -41,31 +41,31 @@ class PermissionPolicy
      */
     public function create(User $user)
     {
-        return $user->can('create_permission');
+        return $user->can('create_classes');
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \Spatie\Permission\Models\Permission  $permission
+     * @param  \App\Models\Classes  $classes
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Permission $permission)
+    public function update(User $user, Classes $classes)
     {
-        return $user->can('update_permission');
+        return $user->can('update_classes');
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \Spatie\Permission\Models\Permission  $permission
+     * @param  \App\Models\Classes  $classes
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Permission $permission)
+    public function delete(User $user, Classes $classes)
     {
-        return $user->can('delete_permission');
+        return $user->can('delete_classes');
     }
 
     /**
@@ -76,19 +76,19 @@ class PermissionPolicy
      */
     public function deleteAny(User $user)
     {
-        return $user->can('delete_any_permission');
+        return $user->can('delete_any_classes');
     }
 
     /**
      * Determine whether the user can permanently delete.
      *
      * @param  \App\Models\User  $user
-     * @param  \Spatie\Permission\Models\Permission  $permission
+     * @param  \App\Models\Classes  $classes
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Permission $permission)
+    public function forceDelete(User $user, Classes $classes)
     {
-        return $user->can('force_delete_permission');
+        return $user->can('force_delete_classes');
     }
 
     /**
@@ -99,19 +99,19 @@ class PermissionPolicy
      */
     public function forceDeleteAny(User $user)
     {
-        return $user->can('force_delete_any_permission');
+        return $user->can('force_delete_any_classes');
     }
 
     /**
      * Determine whether the user can restore.
      *
      * @param  \App\Models\User  $user
-     * @param  \Spatie\Permission\Models\Permission  $permission
+     * @param  \App\Models\Classes  $classes
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Permission $permission)
+    public function restore(User $user, Classes $classes)
     {
-        return $user->can('restore_permission');
+        return $user->can('restore_classes');
     }
 
     /**
@@ -122,19 +122,19 @@ class PermissionPolicy
      */
     public function restoreAny(User $user)
     {
-        return $user->can('restore_any_permission');
+        return $user->can('restore_any_classes');
     }
 
     /**
      * Determine whether the user can replicate.
      *
      * @param  \App\Models\User  $user
-     * @param  \Spatie\Permission\Models\Permission  $permission
+     * @param  \App\Models\Classes  $classes
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function replicate(User $user, Permission $permission)
+    public function replicate(User $user, Classes $classes)
     {
-        return $user->can('replicate_permission');
+        return $user->can('replicate_classes');
     }
 
     /**
@@ -145,7 +145,7 @@ class PermissionPolicy
      */
     public function reorder(User $user)
     {
-        return $user->can('reorder_permission');
+        return $user->can('reorder_classes');
     }
 
 }

@@ -23,6 +23,10 @@ class Checklist extends Model
     {
         return $this->belongsTo(Buildings::class);
     }
+    public function faults()
+    {
+        return $this->belongsToMany(Fault::class);
+    }
     protected $options = [
         'faults_identified' => 'array',
     ];

@@ -26,6 +26,7 @@ use Filament\Forms\Components\MarkdownEditor;
 use App\Filament\Resources\ChecklistResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\ChecklistResource\RelationManagers;
+use AlperenErsoy\FilamentExport\Actions\FilamentExportHeaderAction;
 use App\Filament\Resources\ChecklistResource\Widgets\StatisticsOverview;
 
 class ChecklistResource extends Resource
@@ -135,13 +136,14 @@ class ChecklistResource extends Resource
                 Tables\Actions\EditAction::make(),
                 DeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),
-                
+                FilamentExportHeaderAction::make('export')->button()
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
                 Tables\Actions\RestoreBulkAction::make(),
             ]);
     }
+
     
     public static function getRelations(): array
     {

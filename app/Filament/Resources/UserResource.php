@@ -13,6 +13,7 @@ use Spatie\Permission\Models\Role;
 use Filament\Forms\Components\Card;
 use Illuminate\Support\Facades\Hash;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Checkbox;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
@@ -20,6 +21,7 @@ use Filament\Tables\Actions\DeleteAction;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\MultiSelect;
 use Filament\Tables\Filters\TrashedFilter;
+use Filament\Forms\Components\CheckboxList;
 use App\Filament\Resources\UserResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\UserResource\RelationManagers;
@@ -50,9 +52,6 @@ class UserResource extends Resource
                     ->email()
                     ->required()
                     ->maxLength(255),
-                TextInput::make('phone_no')
-                    ->numeric()
-                    ->required(),
                 TextInput::make('password')
                     ->password()
                     ->required(fn (Page $livewire): bool => $livewire instanceof createUser)
@@ -68,7 +67,10 @@ class UserResource extends Resource
                     ->dehydrated(false),
                 Select::make('roles')
                     ->options(Role::query()->pluck('name', 'id'))
-                ])
+                ]),
+                Section::make("Assign Roles")->schema([
+                    CheckboxList::make('roles')->relationship('roles','name'),
+                ]),
             ]);
     }
 
@@ -79,13 +81,7 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('role_id')
-                    ->sortable()
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('email')
-                    ->sortable()
-                    ->searchable(),
-                TextColumn::make('phone_no')
                     ->sortable()
                     ->searchable(),
                 // TextColumn::make('deleted_at')

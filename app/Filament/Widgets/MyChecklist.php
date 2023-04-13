@@ -10,6 +10,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\BadgeColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Widgets\TableWidget as BaseWidget;
+use AlperenErsoy\FilamentExport\Actions\FilamentExportHeaderAction;
 
 class MyChecklist extends BaseWidget
 {
@@ -19,6 +20,14 @@ class MyChecklist extends BaseWidget
     {
         return Checklist::where('user_id', Auth::id())->latest();   
     }
+        protected function getTableHeaderActions(): array
+{
+    return [
+    
+        FilamentExportHeaderAction::make('export')->button()
+        
+    ];
+}
 
     protected function getTableColumns(): array
     {
@@ -47,7 +56,11 @@ class MyChecklist extends BaseWidget
         TextColumn::make('created_at')
             ->dateTime('d-m-Y')
             ->sortable()
-            ->searchable(),
+            
         ];
     }
+    protected function getTableRecordsPerPageSelectOptions(): array 
+    {
+        return [5, 10, 25, 50, 100];
+    } 
 }

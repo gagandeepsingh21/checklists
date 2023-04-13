@@ -26,17 +26,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Checklist::class);
     }
-        // Define a relation between User and Role models
-    public function assignRoles(array $roleIds)
-        {
-            $this->roles()->sync($roleIds);
-        }
-        
     
     protected $fillable = [
         'name',
         'email',
-        'phone_no',
         'password',
         
     ];
