@@ -2,14 +2,16 @@
 
 namespace App\Http\Livewire;
 
+use Carbon\Carbon;
+use Livewire\Component;
+use App\Models\LoginLog;
 use Adldap\Auth\BindException;
-use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\TextInput;
-use Filament\Http\Responses\Auth\Contracts\LoginResponse;
 use Illuminate\Validation\ValidationException;
-use Livewire\Component;
+use Filament\Http\Responses\Auth\Contracts\LoginResponse;
+use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 
 class Login extends \Filament\Http\Livewire\Auth\Login
 {
@@ -58,6 +60,17 @@ class Login extends \Filament\Http\Livewire\Auth\Login
                     ]);
                 }
             }
+            // Create a new login log for the authenticated user
+            $user = Filament::auth()->user();
+            $loginLog = new LoginLog();
+            $loginLog->user_id = $user->id;
+            $loginLog->login_time = Carbon::now('Africa/Nairobi');
+            $loginLog->save();
+
+            if ($user->roles->isEmpty()) {
+                $user->assignRole('Manager');
+            }
+
         } catch (BindException $exception) {
             throw ValidationException::withMessages([
                 'username' =>$exception->getMessage(),

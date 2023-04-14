@@ -65,8 +65,8 @@ class UserResource extends Resource
                     ->required(fn (Page $livewire): bool => $livewire instanceof createUser)
                     ->minLength(8)
                     ->dehydrated(false),
-                Select::make('roles')
-                    ->options(Role::query()->pluck('name', 'id'))
+                // Select::make('roles')
+                //     ->options(Role::query()->pluck('name', 'id'))
                 ]),
                 Section::make("Assign Roles")->schema([
                     CheckboxList::make('roles')->relationship('roles','name'),
@@ -83,7 +83,10 @@ class UserResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable(), 
+                // Tables\Columns\TextColumn::make('roles')
+                //     ->sortable()
+                //     ->searchable(),
                 // TextColumn::make('deleted_at')
                 //     ->dateTime('d-m-Y')
                 //     ->sortable()

@@ -20,14 +20,14 @@ class MyChecklist extends BaseWidget
     {
         return Checklist::where('user_id', Auth::id())->latest();   
     }
-        protected function getTableHeaderActions(): array
-{
-    return [
+//         protected function getTableHeaderActions(): array
+// {
+//     return [
     
-        FilamentExportHeaderAction::make('export')->button()
+//         FilamentExportHeaderAction::make('export')->button()
         
-    ];
-}
+//     ];
+// }
 
     protected function getTableColumns(): array
     {

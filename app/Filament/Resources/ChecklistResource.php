@@ -136,7 +136,6 @@ class ChecklistResource extends Resource
                 Tables\Actions\EditAction::make(),
                 DeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),
-                FilamentExportHeaderAction::make('export')->button()
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
