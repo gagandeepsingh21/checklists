@@ -20,20 +20,20 @@ class Reports extends Component implements Tables\Contracts\HasTable
 {
     use Tables\Concerns\InteractsWithTable;
     protected function getTableQuery(): Builder 
-    {
-        return Checklist::query()
+{
+    return Checklist::query()
         ->select('checklists.*', 'users.name as name')
         ->leftJoin('users', 'users.id', '=', 'checklists.user_id');    
-    } 
+}
+
     
+
  
     protected function getTableColumns(): array 
     {
         return [
             TextColumn::make('id')->sortable(),
-            TextColumn::make('name')
-                ->sortable()
-                ->searchable(),
+            TextColumn::make('name')->sortable()->searchable(),
             TextColumn::make('building_name')->sortable()->searchable(),
             TextColumn::make('class_name')->sortable()->searchable(),
             TextColumn::make('faults_identified')->sortable()->searchable(),

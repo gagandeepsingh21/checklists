@@ -17,6 +17,7 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Checkbox;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Actions\DeleteAction;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\MultiSelect;
@@ -81,12 +82,21 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->sortable()
                     ->searchable(),
+                BadgeColumn::make('roles.name')
+                    ->sortable()
+                    ->searchable()
+                    ->color(static function ($state): string {
+                        if ($state === 'super_admin') {
+                            return 'success';
+                        }else if ($state === 'Admin'){
+                            return 'primary';
+                        }
+                 
+                        return 'danger';
+                    }),       
                 Tables\Columns\TextColumn::make('email')
                     ->sortable()
-                    ->searchable(), 
-                // Tables\Columns\TextColumn::make('roles')
-                //     ->sortable()
-                //     ->searchable(),
+                    ->searchable(),          
                 // TextColumn::make('deleted_at')
                 //     ->dateTime('d-m-Y')
                 //     ->sortable()
