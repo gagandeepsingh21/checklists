@@ -6,14 +6,22 @@ use Closure;
 use Filament\Tables;
 use App\Models\Checklist;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\BadgeColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Widgets\TableWidget as BaseWidget;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use AlperenErsoy\FilamentExport\Actions\FilamentExportHeaderAction;
 
 class MyChecklist extends BaseWidget
 {
+    use HasWidgetShield;
+
+    public static function canView(): bool
+    {
+        return Gate::allows('widget_MyChecklist');
+    }
     protected static ?string $heading = 'My Checklists';
 
     protected function getTableQuery(): Builder

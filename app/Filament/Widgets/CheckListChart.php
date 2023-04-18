@@ -4,10 +4,18 @@ namespace App\Filament\Widgets;
 
 use App\Models\Checklist;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 class CheckListChart extends ApexChartWidget
 {
+    use HasWidgetShield;
+
+    public static function canView(): bool
+    {
+        return Gate::allows('widget_CheckListChart');
+    }
     /**
      * Chart Id
      *

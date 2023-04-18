@@ -3,12 +3,19 @@
 namespace App\Filament\Widgets;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Filament\Widgets\StatsOverviewWidget\Card;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 
 class StatsOverview extends BaseWidget
 {
-    
+    use HasWidgetShield;
+
+public static function canView(): bool
+{
+    return Gate::allows('widget_StatsOverview');
+}
     protected static ?string $pollingInterval = '10s';
     
     protected function getCards(): array
