@@ -19,7 +19,6 @@ use AlperenErsoy\FilamentExport\Actions\FilamentExportHeaderAction;
 class Reports extends Component implements Tables\Contracts\HasTable
 {
     use Tables\Concerns\InteractsWithTable;
-    
     protected function getTableQuery(): Builder 
     {
         return Checklist::query()
@@ -27,7 +26,7 @@ class Reports extends Component implements Tables\Contracts\HasTable
         ->leftJoin('users', 'users.id', '=', 'checklists.user_id');    
     } 
     
-    
+ 
     protected function getTableColumns(): array 
     {
         return [
@@ -37,7 +36,7 @@ class Reports extends Component implements Tables\Contracts\HasTable
                 ->searchable(),
             TextColumn::make('building_name')->sortable()->searchable(),
             TextColumn::make('class_name')->sortable()->searchable(),
-            //TextColumn::make('faults_identified')->sortable()->searchable(),
+            TextColumn::make('faults_identified')->sortable()->searchable(),
             TextColumn::make('message')->sortable()->searchable(),
             BadgeColumn::make('status')
                 ->sortable()

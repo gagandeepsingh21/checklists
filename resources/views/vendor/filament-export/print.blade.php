@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <html lang="{{ App::getLocale() }}">
+<div style="margin-left: 7rem; margin-top: 10rem; width: 60%; padding: 1.8rem">
+    <img src="data:image/png;base64,<?php echo base64_encode(file_get_contents(base_path('public/images/banner-black.png'))); ?>" width="400" style="page-break-after: always;" alt="strathmore-logo">
+</div>
+<div style="page-break-after: always; padding: 2rem; text-align: center">
+    <h1>{{ $fileName }}</h1>
+    <p>Downloaded on {{ date("d/m/Y") }}</p>
+</div>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

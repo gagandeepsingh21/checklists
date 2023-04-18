@@ -16,15 +16,20 @@ $wire.on('close-preview-modal-{{ $getUniqueActionId() }}', () => { isOpen = fals
                     </th>
                 @endforeach
             </tr>
-            @foreach ($getRows() as $row)
-                <tr>
-                    @foreach ($getAllColumns() as $column)
-                        <td>
+        @foreach ($getRows() as $row)
+            <tr>
+                @foreach ($getAllColumns() as $column)
+                    <td>
+                        @if (is_array($row[$column->getName()]))
+                            {{ implode(', ', $row[$column->getName()]) }}
+                        @else
                             {{ $row[$column->getName()] }}
-                        </td>
-                    @endforeach
-                </tr>
-            @endforeach
+                        @endif
+                    </td>
+                @endforeach
+            </tr>
+        @endforeach
+
         </table>
         <div>
             <x-tables::pagination :paginator="$getRows()" :records-per-page-select-options="$this->getTable()->getRecordsPerPageSelectOptions()" />

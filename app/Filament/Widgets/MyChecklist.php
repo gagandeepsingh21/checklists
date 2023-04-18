@@ -20,14 +20,6 @@ class MyChecklist extends BaseWidget
     {
         return Checklist::where('user_id', Auth::id())->latest();   
     }
-//         protected function getTableHeaderActions(): array
-// {
-//     return [
-    
-//         FilamentExportHeaderAction::make('export')->button()
-        
-//     ];
-// }
 
     protected function getTableColumns(): array
     {
@@ -40,9 +32,9 @@ class MyChecklist extends BaseWidget
         TextColumn::make('class_name')
             ->sortable()
             ->searchable(),
-        // TextColumn::make('faults_identified')
-        //     ->sortable()
-        //     ->searchable(),
+        TextColumn::make('faults_identified')
+            ->sortable()
+            ->searchable(),
         BadgeColumn::make('status')
             ->sortable()
             ->searchable()
@@ -61,6 +53,6 @@ class MyChecklist extends BaseWidget
     }
     protected function getTableRecordsPerPageSelectOptions(): array 
     {
-        return [5, 10, 25, 50, 100];
+        return [5, 10, 25, 100];
     } 
 }
