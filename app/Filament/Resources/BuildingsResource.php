@@ -82,4 +82,11 @@ class BuildingsResource extends Resource
             'view' => Pages\ViewBuildings::route('/{record}/view')
         ];
     }    
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
+    }
 }
