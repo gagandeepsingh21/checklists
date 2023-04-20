@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Hash;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Checkbox;
+use Filament\Tables\Columns\TagsColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\BadgeColumn;
@@ -82,18 +83,9 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->sortable()
                     ->searchable(),
-                BadgeColumn::make('roles.name')
+                TagsColumn::make('roles.name')
                     ->sortable()
-                    ->searchable()
-                    ->color(static function ($state): string {
-                        if ($state === 'super_admin') {
-                            return 'success';
-                        }else if ($state === 'Admin'){
-                            return 'primary';
-                        }
-                 
-                        return 'danger';
-                    }),       
+                    ->searchable(),       
                 Tables\Columns\TextColumn::make('email')
                     ->sortable()
                     ->searchable(),          
