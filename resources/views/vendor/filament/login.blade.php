@@ -1,5 +1,5 @@
 <form wire:submit.prevent="authenticate" class="space-y-8">
-    <div>
+    <!-- <div>
         <h2 class="font-bold tracking-tight text-center text-2xl">
             {{ __('filament::login.heading') }}
         </h2>
@@ -11,7 +11,7 @@
             </a>
         </p>
         @endif
-    </div>
+    </div> -->
     {{ $this->form }}
 
     <x-filament::button type="submit" form="authenticate" class="w-full">
