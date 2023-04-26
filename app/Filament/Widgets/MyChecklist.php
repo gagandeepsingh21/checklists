@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\BadgeColumn;
+use Filament\Tables\Columns\Layout\Panel;
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\Stack;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Widgets\TableWidget as BaseWidget;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
@@ -32,6 +35,17 @@ class MyChecklist extends BaseWidget
     protected function getTableColumns(): array
     {
         return [
+            Split::make([
+                TextColumn::make('building_name')
+                ->searchable(),
+                TextColumn::make('class_name')
+                ->searchable(),
+                TextColumn::make('faults_identified')
+                ->searchable(),
+    
+            ]),
+            Panel::make([
+                Stack::make([
         TextColumn::make('id')
             ->sortable(),
         TextColumn::make('building_name')
@@ -56,6 +70,8 @@ class MyChecklist extends BaseWidget
         TextColumn::make('created_at')
             ->dateTime('d-m-Y')
             ->sortable()
+        ]),
+        ])->collapsible(),
             
         ];
     }

@@ -12,6 +12,9 @@ use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Facades\Excel;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\BadgeColumn;
+use Filament\Tables\Columns\Layout\Panel;
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\Stack;
 use Illuminate\Database\Eloquent\Builder;
 use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 use AlperenErsoy\FilamentExport\Actions\FilamentExportHeaderAction;
@@ -32,6 +35,15 @@ class Reports extends Component implements Tables\Contracts\HasTable
     protected function getTableColumns(): array 
     {
         return [
+            Split::make([
+                Tables\Columns\TextColumn::make('name')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('faults_identified')->sortable()->searchable(),
+                TextColumn::make('message')->sortable()->searchable(),
+            ]),
+            Panel::make([
+                Stack::make([
             TextColumn::make('id')->sortable(),
             TextColumn::make('name')->sortable()->searchable(),
             TextColumn::make('building_name')->sortable()->searchable(),
@@ -56,6 +68,8 @@ class Reports extends Component implements Tables\Contracts\HasTable
             //     ->dateTime('d-m-Y')
             //     ->sortable()
             //     ->searchable(),
+        ]),
+        ])->collapsible(),
             
         ];
     }
