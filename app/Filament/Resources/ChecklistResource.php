@@ -15,11 +15,16 @@ use Filament\Forms\Components\Card;
 use Illuminate\Support\Facades\Hash;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\BadgeColumn;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Columns\Layout\Panel;
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\Stack;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Forms\Components\MarkdownEditor;
@@ -39,11 +44,10 @@ class ChecklistResource extends Resource
     protected static ?string $navigationGroup = 'Checklist';
 
     public static function form(Form $form): Form
-    {
-
+    { 
         return $form
             ->schema([
-                    Card::make()
+                Card::make()
                     ->schema([ 
                         Hidden::make('user_id')
                             ->default(auth()->id()),
@@ -94,6 +98,17 @@ class ChecklistResource extends Resource
     {
         return $table
             ->columns([
+                Split::make([
+                    TextColumn::make('building_name')
+                    ->searchable(),
+                    TextColumn::make('class_name')
+                    ->searchable(),
+                    TextColumn::make('faults_identified')
+                    ->searchable(),
+        
+                ]),
+                Panel::make([
+                    Stack::make([
                 TextColumn::make('id')
                     ->sortable(),
                 TextColumn::make('building_name')
@@ -126,6 +141,8 @@ class ChecklistResource extends Resource
                     ->dateTime('d-m-Y')
                     ->sortable()
                     ->searchable(),
+                    ]),
+                ])->collapsible(),
             
             ])
             ->filters([

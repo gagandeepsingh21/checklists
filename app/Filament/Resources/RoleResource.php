@@ -9,9 +9,14 @@ use Filament\Resources\Table;
 use Filament\Resources\Resource;
 use Spatie\Permission\Models\Role;
 use Filament\Forms\Components\Card;
+use Filament\Forms\Components\Fieldset;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Columns\Layout\Panel;
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\Stack;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\MultiSelect;
 use App\Filament\Resources\RoleResource\Pages;
@@ -31,7 +36,7 @@ class RoleResource extends Resource
     {
         return $form
             ->schema([
-                Card::make()
+                Fieldset::make('Add Roles')
                     ->schema([
                         TextInput::make('name') 
                             ->unique(ignoreRecord: true)
@@ -48,15 +53,34 @@ class RoleResource extends Resource
     {
         return $table
             ->columns([
+                Split::make([
+                    TextColumn::make('id')
+                        ->sortable(),
+                    Tables\Columns\TextColumn::make('name')
+                        ->sortable()
+                        ->searchable(),
+                ]),
+                Panel::make([
+                    Stack::make([
                 TextColumn::make('id')
                     ->sortable(),
-                TextColumn::make('name')
+                BadgeColumn::make('name')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->color(static function ($state): string {
+                        if ($state === 'super_admin') {
+                            return 'success';
+                        }else if($state === 'Admin') {
+                            return 'primary';
+                        }
+                        return 'secondary';
+                    }),
                 TextColumn::make('created_at')
                     ->dateTime('d-m-Y')
                     ->sortable()
                     ->searchable(),
+                ]),
+                ])->collapsible(),
             ])
             ->filters([
                 //

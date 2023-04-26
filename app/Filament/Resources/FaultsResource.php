@@ -11,10 +11,14 @@ use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Fieldset;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Columns\Layout\Panel;
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\Stack;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Actions\RestoreAction;
 use Filament\Tables\Filters\TrashedFilter;
@@ -36,8 +40,11 @@ class FaultsResource extends Resource
         $classes = Classes::pluck('class_name', 'id')->toArray();
         return $form
             ->schema([
-                Hidden::make('user_id')->default(auth()->id()),
-                TextInput::make('faults_identified')->required()->unique(),
+                Fieldset::make('Add Faults')
+                    ->schema([ 
+                        Hidden::make('user_id')->default(auth()->id()),
+                        TextInput::make('faults_identified')->required()->unique(),
+                ])
             ]);
     }
 
@@ -45,13 +52,22 @@ class FaultsResource extends Resource
     {
         return $table
             ->columns([
-            TextColumn::make('id')->sortable(),
-            TextColumn::make('faults_identified')->sortable()->searchable(),
-            TextColumn::make('deleted_at')->sortable()->searchable(),
+                Split::make([
+                    TextColumn::make('id')
+                        ->sortable(),
+                        TextColumn::make('faults_identified')->sortable()->searchable(),
+                    ]),
+                    Panel::make([
+                        Stack::make([
+                            TextColumn::make('id')->sortable(),
+                            TextColumn::make('faults_identified')->sortable()->searchable(),
+                            TextColumn::make('deleted_at')->sortable()->searchable(),
+                        ]),
+                    ])->collapsible(),
             ])
-            ->filters([
+                ->filters([
                 
-            ])
+                ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),

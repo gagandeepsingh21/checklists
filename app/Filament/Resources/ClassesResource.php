@@ -13,10 +13,14 @@ use Filament\Resources\Resource;
 use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Fieldset;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Columns\Layout\Panel;
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\Stack;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Actions\RestoreAction;
 use Filament\Tables\Filters\TrashedFilter;
@@ -39,12 +43,17 @@ class ClassesResource extends Resource
         $buildings = Buildings::pluck('building_name', 'id')->toArray();
     
         return $form
+        
             ->schema([
-                Hidden::make('user_id')->default(auth()->id()),
-                BelongsToSelect::make('building_id')
-                    ->options($buildings)
-                    ->required(),
-                TextInput::make('class_name')->required()->unique(),
+
+                Fieldset::make('Add Classes')
+                    ->schema([
+                        Hidden::make('user_id')->default(auth()->id()),
+                        BelongsToSelect::make('building_id')
+                            ->options($buildings)
+                            ->required(),
+                        TextInput::make('class_name')->required()->unique(),
+                    ])
             ]);
     }
 
@@ -52,10 +61,19 @@ class ClassesResource extends Resource
     {
         return $table
             ->columns([
-            TextColumn::make('id')->sortable(),
-            TextColumn::make('building.building_name', 'Buildings')->sortable()->searchable(),
-            TextColumn::make('class_name')->sortable()->searchable(),
-            TextColumn::make('deleted_at')->sortable()->searchable(),
+                Split::make([
+                    TextColumn::make('id')
+                        ->sortable(),
+                    TextColumn::make('class_name')->sortable()->searchable(),
+                ]),
+                Panel::make([
+                    Stack::make([
+                        TextColumn::make('id')->sortable(),
+                        TextColumn::make('building.building_name', 'Buildings')->sortable()->searchable(),
+                        TextColumn::make('class_name')->sortable()->searchable(),
+                        TextColumn::make('deleted_at')->sortable()->searchable(),
+                    ]),
+                ])->collapsible(),
             ])
             ->filters([
                 

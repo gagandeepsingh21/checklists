@@ -15,11 +15,15 @@ use Illuminate\Support\Facades\Hash;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\Fieldset;
 use Filament\Tables\Columns\TagsColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Columns\Layout\Panel;
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\Stack;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\MultiSelect;
 use Filament\Tables\Filters\TrashedFilter;
@@ -45,7 +49,7 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                Card::make()
+                Fieldset::make('User Details')
                 ->schema([
                 TextInput::make('name')
                     ->required()
@@ -70,7 +74,7 @@ class UserResource extends Resource
                 // Select::make('roles')
                 //     ->options(Role::query()->pluck('name', 'id'))
                 ]),
-                Section::make("Assign Roles")->schema([
+                Fieldset::make("Assign Roles")->schema([
                     CheckboxList::make('roles')->relationship('roles','name'),
                 ]),
             ]);
@@ -80,6 +84,17 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
+                Split::make([
+                    TextColumn::make('id')
+                        ->sortable(),
+                    Tables\Columns\TextColumn::make('name')
+                        ->sortable()
+                        ->searchable(),
+                ]),
+                Panel::make([
+                    Stack::make([
+                TextColumn::make('id')
+                        ->sortable(),
                 Tables\Columns\TextColumn::make('name')
                     ->sortable()
                     ->searchable(),
@@ -97,7 +112,8 @@ class UserResource extends Resource
                     ->dateTime('d-m-Y')
                     ->sortable()
                     ->searchable(),
-                
+                ]),
+                ])->collapsible(),
             ])
             ->filters([
                 
@@ -123,7 +139,7 @@ class UserResource extends Resource
     {
         return [
             'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
+            //'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
             'view' => Pages\ViewUser::route('/{record}/view'),
         ];

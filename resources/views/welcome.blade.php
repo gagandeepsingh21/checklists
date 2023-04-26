@@ -67,8 +67,8 @@
                 align-items: center;
                 align-items: center;
                 flex-wrap: wrap;
-                gap: 50px;
-                padding: 150px;
+                gap: 25px;
+                padding: 100px;
                 margin-top:0px;
             }
             .content-text {
@@ -87,8 +87,9 @@
                 flex: 1;
             }
             .content-image img {
-                max-width: 100%;
+                max-width: 90%;
                 height: auto;
+                border-radius:25px;
             }
         </style>
     </head>
@@ -103,7 +104,7 @@
                 <p>"An easier way to create checklists!"</p>
             </div>
             <div class="content-image">
-                <img src="https://via.placeholder.com/600x400" alt="placeholder image">
+                <img src="{{url('/images/checklist.jpg')}}" alt="placeholder image">
             </div>
         </div>
     </body>
