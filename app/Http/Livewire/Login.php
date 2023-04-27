@@ -9,6 +9,7 @@ use Adldap\Auth\BindException;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Illuminate\Validation\ValidationException;
 use Filament\Http\Responses\Auth\Contracts\LoginResponse;
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
@@ -60,6 +61,19 @@ class Login extends \Filament\Http\Livewire\Auth\Login
                     ]);
                 }
             }
+        
+            Notification::make()
+            ->title('Logged in successfully')
+            ->body('**Welcome to the Checklist System.** Here is a small guide for you to navigate through the system more efficiently:<br><br>
+            <ol style="font-size: 18px">
+        <li>**1.)** On your Left you have the sidebar which will consists of the Dashboard, Your profile and other menu items.</li><br>
+        <li>**2.)** You will be able to View, Create, Update, Delete and Restore on the different menu items based on the **Permissions** you have been assigned.</li><br>
+        <li>**3.)** You will be able to Generate reports for the various checklists in Excel, CSV and PDF.</li><br>
+        </ol>
+        ')
+            ->success()
+            ->persistent()
+            ->send();
             // Create a new login log for the authenticated user
             $user = Filament::auth()->user();
             $loginLog = new LoginLog();
