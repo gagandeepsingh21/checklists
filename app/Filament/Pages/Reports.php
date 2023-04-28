@@ -11,6 +11,8 @@ class Reports extends Page
 
     protected static string $view = 'filament.pages.reports';
 
+    protected static ?string $navigationGroup = 'Reports';
+
     public static function shouldRegisterNavigation(): bool
     {
         return Gate::allows('page_Reports');
