@@ -60,8 +60,7 @@ class ChecklistResource extends Resource
 
                         Select::make('class_name')
                             ->options(fn($get) => Classes::join('buildings', 'classes.building_id', '=', 'buildings.id')->where('building_name', $get('building_name'))->pluck('class_name', 'class_name'))
-                            ->visible(fn($get) => $get('building_name') !== null)
-                            ->required(),
+                            ->visible(fn($get) => $get('building_name') !== null),
                         Select::make('faults_identified')
                             ->multiple()
                             ->options(Faults::all()->pluck('faults_identified', 'faults_identified'))
