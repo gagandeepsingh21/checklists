@@ -41,7 +41,7 @@ class ChecklistResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
-    protected static ?string $navigationGroup = 'Checklists';
+    protected static ?string $navigationGroup = 'Checklist';
 
     public static function form(Form $form): Form
     { 
