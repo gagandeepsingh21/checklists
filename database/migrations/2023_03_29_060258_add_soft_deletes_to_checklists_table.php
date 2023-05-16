@@ -22,11 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('checklists', function (Blueprint $table) {
-<<<<<<< HEAD
-            $table->dropSoftDeletes();
-=======
             // $table->dropSoftDeletes();
->>>>>>> strathmore/main
         });
     }
 };
