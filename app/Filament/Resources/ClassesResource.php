@@ -37,6 +37,8 @@ class ClassesResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
 
     protected static ?string $navigationGroup = 'Checklist';
+
+    protected static ?string $recordTitleAttribute = 'class_name';
     
     public static function form(Form $form): Form
     {
@@ -61,28 +63,20 @@ class ClassesResource extends Resource
     {
         return $table
             ->columns([
-                Split::make([
-                    TextColumn::make('id')
-                        ->sortable(),
-                    TextColumn::make('class_name')->sortable()->searchable(),
-                ]),
-                Panel::make([
-                    Stack::make([
-                        TextColumn::make('id')->sortable(),
-                        TextColumn::make('building.building_name', 'Buildings')->sortable()->searchable(),
-                        TextColumn::make('class_name')->sortable()->searchable(),
-                        TextColumn::make('deleted_at')->sortable()->searchable(),
-                    ]),
-                ])->collapsible(),
+
+                TextColumn::make('id')->sortable(),
+                TextColumn::make('building.building_name', 'Buildings')->sortable()->searchable()->toggleable(),
+                TextColumn::make('class_name')->sortable()->searchable(),
+                //TextColumn::make('deleted_at')->sortable()->searchable()->toggleable(),
             ])
             ->filters([
                 
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                DeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
+                Tables\Actions\ViewAction::make()->iconButton(),
+                Tables\Actions\EditAction::make()->iconButton(),
+                DeleteAction::make()->iconButton(),
+                Tables\Actions\RestoreAction::make()->iconButton(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
@@ -95,6 +89,13 @@ class ClassesResource extends Resource
             
         ];
     }
+    // public static function getGlobalSearchResultDetails(Model $record):array
+    // {
+    //     return[
+    //         'Class Name' => $record->class_name,
+    //         'Faults Identified'=>$record->faults_identified,
+    //     ];
+    // }
     
     public static function getPages(): array
     {

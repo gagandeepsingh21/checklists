@@ -53,15 +53,6 @@ class RoleResource extends Resource
     {
         return $table
             ->columns([
-                Split::make([
-                    TextColumn::make('id')
-                        ->sortable(),
-                    Tables\Columns\TextColumn::make('name')
-                        ->sortable()
-                        ->searchable(),
-                ]),
-                Panel::make([
-                    Stack::make([
                 TextColumn::make('id')
                     ->sortable(),
                 BadgeColumn::make('name')
@@ -79,15 +70,14 @@ class RoleResource extends Resource
                     ->dateTime('d-m-Y')
                     ->sortable()
                     ->searchable(),
-                ]),
-                ])->collapsible(),
+
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                DeleteAction::make(),
+                Tables\Actions\EditAction::make()->iconButton(),
+                DeleteAction::make()->iconButton(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
