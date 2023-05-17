@@ -52,27 +52,20 @@ class FaultsResource extends Resource
     {
         return $table
             ->columns([
-                Split::make([
-                    TextColumn::make('id')
-                        ->sortable(),
-                        TextColumn::make('faults_identified')->sortable()->searchable(),
-                    ]),
-                    Panel::make([
-                        Stack::make([
-                            TextColumn::make('id')->sortable(),
-                            TextColumn::make('faults_identified')->sortable()->searchable(),
-                            TextColumn::make('deleted_at')->sortable()->searchable(),
-                        ]),
-                    ])->collapsible(),
+
+                TextColumn::make('id')->sortable(),
+                TextColumn::make('faults_identified')->sortable()->searchable(),
+                //TextColumn::make('deleted_at')->sortable()->searchable()->toggleable(),
+
             ])
                 ->filters([
                 
                 ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                DeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
+                Tables\Actions\ViewAction::make()->iconButton(),
+                Tables\Actions\EditAction::make()->iconButton(),
+                DeleteAction::make()->iconButton(),
+                Tables\Actions\RestoreAction::make()->iconButton(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

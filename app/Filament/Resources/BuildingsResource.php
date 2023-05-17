@@ -29,6 +29,8 @@ class BuildingsResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-home';
 
     protected static ?string $navigationGroup = 'Checklist';
+
+    protected static ?string $recordTitleAttribute = 'building_name';
     
     public static function form(Form $form): Form
     {
@@ -49,33 +51,23 @@ class BuildingsResource extends Resource
     {
         return $table
             ->columns([
-                Split::make([
-                    TextColumn::make('id')
-                    ->sortable(),
-                TextColumn::make('building_name')
-                    ->searchable(),
-                ]),
-                Panel::make([
-                    Stack::make([
                         TextColumn::make('id')
                             ->sortable(),
                         TextColumn::make('building_name')
                             ->sortable()
                             ->searchable(),
-                        TextColumn::make('deleted_at')
-                            ->sortable()
-                            ->searchable(),
-                    ]),
-                ])->collapsible(),
+                        // TextColumn::make('deleted_at')
+                        //     ->sortable()
+                        //     ->searchable(),
             ])
             ->filters([
                 TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                DeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
+                Tables\Actions\ViewAction::make()->iconButton(),
+                Tables\Actions\EditAction::make()->iconButton(),
+                DeleteAction::make()->iconButton(),
+                Tables\Actions\RestoreAction::make()->iconButton(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

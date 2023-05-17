@@ -18,6 +18,7 @@ use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Fieldset;
 use Filament\Tables\Columns\TagsColumn;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Actions\DeleteAction;
@@ -39,6 +40,8 @@ class UserResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
     protected static ?string $navigationGroup = 'User Management';
+    
+    protected static ?string $recordTitleAttribute = 'name';
 
     // public static function getEloquentQuery(): Builder{
 
@@ -84,15 +87,7 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                Split::make([
-                    TextColumn::make('id')
-                        ->sortable(),
-                    Tables\Columns\TextColumn::make('name')
-                        ->sortable()
-                        ->searchable(),
-                ]),
-                Panel::make([
-                    Stack::make([
+
                 TextColumn::make('id')
                         ->sortable(),
                 Tables\Columns\TextColumn::make('name')
@@ -112,15 +107,14 @@ class UserResource extends Resource
                     ->dateTime('d-m-Y')
                     ->sortable()
                     ->searchable(),
-                ]),
-                ])->collapsible(),
+
             ])
             ->filters([
                 
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()->iconButton(),
+                Tables\Actions\EditAction::make()->iconButton(),
                
             ])
             ->bulkActions([
@@ -134,6 +128,13 @@ class UserResource extends Resource
             //
         ];
     }
+    // public static function getGlobalSearchResultDetails(Model $record):array
+    // {
+    //     return[
+    //         'Role Name' => $record->roles.name,
+    //         // 'Faults Identified'=>$record->faults_identified,
+    //     ];
+    // }
     
     public static function getPages(): array
     {

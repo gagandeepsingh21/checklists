@@ -18,6 +18,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\ImageColumn;
@@ -42,6 +43,8 @@ class ChecklistResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
     protected static ?string $navigationGroup = 'Checklist';
+
+    protected static ?string $recordTitleAttribute = 'building_name';
 
     public static function form(Form $form): Form
     { 
@@ -97,17 +100,8 @@ class ChecklistResource extends Resource
     {
         return $table
             ->columns([
-                Split::make([
-                    TextColumn::make('building_name')
-                    ->searchable(),
-                    TextColumn::make('class_name')
-                    ->searchable(),
-                    TextColumn::make('faults_identified')
-                    ->searchable(),
-        
-                ]),
-                Panel::make([
-                    Stack::make([
+
+
                 TextColumn::make('id')
                     ->sortable(),
                 TextColumn::make('building_name')
@@ -118,10 +112,12 @@ class ChecklistResource extends Resource
                     ->searchable(),
                 TextColumn::make('faults_identified')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(),
                 TextColumn::make('message')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(),
                 BadgeColumn::make('status')
                     ->sortable()
                     ->searchable()
@@ -135,23 +131,22 @@ class ChecklistResource extends Resource
                 TextColumn::make('created_at')
                     ->dateTime('d-m-Y')
                     ->sortable()
-                    ->searchable(),
-                TextColumn::make('deleted_at')
-                    ->dateTime('d-m-Y')
-                    ->sortable()
-                    ->searchable(),
-                    ]),
-                ])->collapsible(),
+                    ->searchable()
+                    ->toggleable(),
+                // TextColumn::make('deleted_at')
+                //     ->dateTime('d-m-Y')
+                //     ->sortable()
+                //     ->searchable(),
             
             ])
             ->filters([
                 TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                DeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
+                Tables\Actions\ViewAction::make()->iconButton(),
+                Tables\Actions\EditAction::make()->iconButton(),
+                DeleteAction::make()->iconButton(),
+                Tables\Actions\RestoreAction::make()->iconButton(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
@@ -166,6 +161,14 @@ class ChecklistResource extends Resource
             //
         ];
     }
+    public static function getGlobalSearchResultDetails(Model $record):array
+    {
+        return[
+            'Class Name' => $record->class_name,
+            'Faults Identified'=>$record->faults_identified,
+        ];
+    }
+
     public static function getWidgets(): array
 {
     return [
