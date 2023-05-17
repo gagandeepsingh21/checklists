@@ -11,7 +11,7 @@ class MyProfile extends Page
 
     protected static string $view = 'filament.pages.my-profile';
 
-    protected static ?string $navigationGroup = 'My Profile';
+    protected static ?string $navigationGroup = 'User Management';
     public static function shouldRegisterNavigation(): bool
     {
         return Gate::allows('page_MyProfile');
