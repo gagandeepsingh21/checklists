@@ -35,21 +35,13 @@ class Reports extends Component implements Tables\Contracts\HasTable
     protected function getTableColumns(): array 
     {
         return [
-            Split::make([
-                Tables\Columns\TextColumn::make('name')
-                    ->sortable()
-                    ->searchable(),
-                TextColumn::make('faults_identified')->sortable()->searchable(),
-                TextColumn::make('message')->sortable()->searchable(),
-            ]),
-            Panel::make([
-                Stack::make([
+
             TextColumn::make('id')->sortable(),
             TextColumn::make('name')->sortable()->searchable(),
             TextColumn::make('building_name')->sortable()->searchable(),
             TextColumn::make('class_name')->sortable()->searchable(),
-            TextColumn::make('faults_identified')->sortable()->searchable(),
-            TextColumn::make('message')->sortable()->searchable(),
+            TextColumn::make('faults_identified')->sortable()->searchable()->toggleable(),
+            TextColumn::make('message')->sortable()->searchable()->toggleable(),
             BadgeColumn::make('status')
                 ->sortable()
                 ->searchable()
@@ -62,14 +54,13 @@ class Reports extends Component implements Tables\Contracts\HasTable
                 }),
             TextColumn::make('created_at')
                 ->dateTime('d-m-Y')
-                ->sortable(),
+                ->sortable()
+                ->toggleable(),
                 
             // TextColumn::make('deleted_at')
             //     ->dateTime('d-m-Y')
             //     ->sortable()
             //     ->searchable(),
-        ]),
-        ])->collapsible(),
             
         ];
     }
