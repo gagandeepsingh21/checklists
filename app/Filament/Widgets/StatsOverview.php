@@ -36,18 +36,18 @@ public static function canView(): bool
          Card::make('Total Classes', $totalclasses)
             ->description($totalclasses. ' ' .'Classes')
             ->descriptionIcon('heroicon-s-trending-up'),
-        Card::make('Total Requests', $totalRequests)
-            ->description($totalRequests. ' ' .'Requests')
+        Card::make('Total Reports', $totalRequests)
+            ->description($totalRequests. ' ' .'Reports')
             ->descriptionIcon('heroicon-s-trending-up')
             ->chart([7, 2, 10, 3, 15, 4, 17])
             ->color('success'),
-        Card::make('Completed Requests', $completedRequests)
-            ->description($completedRequests. ' ' .'Requests Completed')
+        Card::make('Completed Reports', $completedRequests)
+            ->description($completedRequests. ' ' .'Reports Completed')
             ->descriptionIcon('heroicon-s-trending-down')
             ->chart([7, 2, 10, 3, 15, 4, 17])
             ->color('success'),
-        Card::make('Pending Requests', $pendingRequests)
-            ->description($pendingRequests. ' ' .'Requests Pending')
+        Card::make('Pending Reports', $pendingRequests)
+            ->description($pendingRequests. ' ' .'Reports Pending')
             ->descriptionIcon('heroicon-s-trending-up')
             ->chart([7, 2, 10, 3, 15, 4, 17])
             ->color('danger'),
