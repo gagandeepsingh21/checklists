@@ -64,7 +64,7 @@ class ClassesResource extends Resource
         return $table
             ->columns([
 
-                TextColumn::make('id')->sortable(),
+                // TextColumn::make('id')->sortable(),
                 TextColumn::make('building.building_name', 'Buildings')->sortable()->searchable()->toggleable(),
                 TextColumn::make('class_name')->sortable()->searchable(),
                 //TextColumn::make('deleted_at')->sortable()->searchable()->toggleable(),

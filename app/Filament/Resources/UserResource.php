@@ -88,8 +88,8 @@ class UserResource extends Resource
         return $table
             ->columns([
 
-                TextColumn::make('id')
-                        ->sortable(),
+                // TextColumn::make('id')
+                //         ->sortable(),
                 Tables\Columns\TextColumn::make('name')
                     ->sortable()
                     ->searchable(),
