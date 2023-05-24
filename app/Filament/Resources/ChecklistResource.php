@@ -67,8 +67,7 @@ class ChecklistResource extends Resource
                         Select::make('faults_identified')
                             ->multiple()
                             ->options(Faults::all()->pluck('faults_identified', 'faults_identified'))
-                            ->searchable()
-                            ->required(),
+                            ->searchable(),
                         MarkdownEditor::make('message')
                             ->required(),
                         Select::make('status')
