@@ -32,6 +32,7 @@ class BuildingsResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'building_name';
     
+    
     public static function form(Form $form): Form
     {
         return $form
