@@ -44,7 +44,7 @@ class ChecklistResource extends Resource
 
     protected static ?string $navigationGroup = 'Checklist';
 
-    protected static ?string $recordTitleAttribute = 'building_name';
+    //protected static ?string $recordTitleAttribute = 'building_name';
 
     public static function form(Form $form): Form
     { 
