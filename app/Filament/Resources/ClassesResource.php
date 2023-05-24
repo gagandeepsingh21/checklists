@@ -16,6 +16,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Fieldset;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Columns\Layout\Panel;
@@ -89,14 +90,12 @@ class ClassesResource extends Resource
             
         ];
     }
-    // public static function getGlobalSearchResultDetails(Model $record):array
-    // {
-    //     return[
-    //         'Class Name' => $record->class_name,
-    //         'Faults Identified'=>$record->faults_identified,
-    //     ];
-    // }
-    
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        return [
+            'Building name' => $record->building->building_name,
+        ];
+    }
     public static function getPages(): array
     {
         return [

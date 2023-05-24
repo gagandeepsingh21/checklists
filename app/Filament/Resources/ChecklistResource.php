@@ -44,7 +44,7 @@ class ChecklistResource extends Resource
 
     protected static ?string $navigationGroup = 'Checklist';
 
-    //protected static ?string $recordTitleAttribute = 'building_name';
+    protected static ?string $recordTitleAttribute = 'building_name';
 
     public static function form(Form $form): Form
     { 
@@ -159,13 +159,19 @@ class ChecklistResource extends Resource
             //
         ];
     }
-    public static function getGlobalSearchResultDetails(Model $record):array
+    public static function getGlobalSearchResultDetails(Model $record): array
     {
-        return[
-            'Class Name' => $record->class_name,
-            'Faults Identified'=>$record->faults_identified,
+        $faultsIdentified = $record->faults_identified;
+        if (is_array($faultsIdentified)) {
+            $faultsIdentified = implode(', ', $faultsIdentified);
+        }
+
+        return [
+            'Class name' => $record->class_name,
+            'Faults identified' => $faultsIdentified,
         ];
     }
+
 
     public static function getWidgets(): array
 {
