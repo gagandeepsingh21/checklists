@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\User;
 use Filament\Tables;
 use Livewire\Component;
 use Barryvdh\DomPDF\PDF;
@@ -63,6 +64,23 @@ class Reports extends Component implements Tables\Contracts\HasTable
             //     ->searchable(),
             
         ];
+    }
+    protected function getTableFilters(): array
+    {
+        return [ 
+            // Tables\Filters\SelectFilter::make('name')
+            // ->multiple()
+            // ->options(
+            //     User::query()
+            //         ->join('checklists', 'checklists.user_id', '=', 'users.id')
+            //         ->pluck('users.name', 'users.id')
+            // ),
+            Tables\Filters\SelectFilter::make('status')
+            ->options([
+                'Solved' => 'Solved',
+                'Pending' => ' Pending',
+            ])
+        ]; 
     }
     
 //     protected function getTableHeaderActions(): array

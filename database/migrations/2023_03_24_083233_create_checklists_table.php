@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('faults_identified');
             $table->string('message');
             $table->string('status')->default('pending');
+            $table->date('date_created')->nullable();
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
         });

@@ -37,6 +37,7 @@ class Checklist extends Model
        'faults_identified',
        'message',
        'status',
+       'date_created',
         
     ];
     public function save(array $options = [])

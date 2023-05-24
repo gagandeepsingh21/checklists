@@ -22,10 +22,12 @@ use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\ImageColumn;
+use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Columns\Layout\Panel;
 use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\Layout\Stack;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Forms\Components\MarkdownEditor;
@@ -69,6 +71,8 @@ class ChecklistResource extends Resource
                             ->options(Faults::all()->pluck('faults_identified', 'faults_identified'))
                             ->searchable(),
                         MarkdownEditor::make('message')
+                            ->required(),
+                        DatePicker::make('date_created')
                             ->required(),
                         Select::make('status')
                             ->options([
@@ -125,6 +129,12 @@ class ChecklistResource extends Resource
                             return 'success';
                         }
                     }),
+                TextColumn::make('date_created')
+                    ->label('Date Checked')
+                    ->dateTime('d-m-Y')
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(),
                 TextColumn::make('created_at')
                     ->dateTime('d-m-Y')
                     ->sortable()
@@ -138,6 +148,11 @@ class ChecklistResource extends Resource
             ])
             ->filters([
                 TrashedFilter::make(),
+                SelectFilter::make('status')
+                ->options([
+                    'Solved' => 'Solved',
+                    'Pending' => ' Pending',
+                ])
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()->iconButton(),
