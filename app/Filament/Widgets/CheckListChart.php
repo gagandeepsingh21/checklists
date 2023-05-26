@@ -63,11 +63,13 @@ class CheckListChart extends ApexChartWidget
         $completedRequests = DB::table('checklists')
             ->where('status', 'solved')
             ->whereBetween('created_at', [$startDate, $endDate])
+            ->whereNull('deleted_at')
             ->count();
 
         $pendingRequests = DB::table('checklists')
             ->where('status', 'pending')
             ->whereBetween('created_at', [$startDate, $endDate])
+            ->whereNull('deleted_at')
             ->count();
 
         return [

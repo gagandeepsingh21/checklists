@@ -12,8 +12,8 @@ class StatisticsOverview extends BaseWidget
     {
         
             
-        $completedRequests = DB::table('checklists')->where('status', 'solved')->count();
-        $pendingRequests = DB::table('checklists')->where('status', 'pending')->count();
+        $completedRequests = DB::table('checklists')->whereNull('deleted_at')->where('status', 'solved')->count();
+        $pendingRequests = DB::table('checklists')->whereNull('deleted_at')->where('status', 'pending')->count();
         $totalRequests = $completedRequests + $pendingRequests;
         return [
         Card::make('Total Requests', $totalRequests)

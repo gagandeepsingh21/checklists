@@ -20,11 +20,11 @@ public static function canView(): bool
     
     protected function getCards(): array
     {
-        $totalUsers = DB::table('users')->count();
-        $totalbuildings = DB::table('buildings')->count();
-        $totalclasses = DB::table('classes')->count();
-        $completedRequests = DB::table('checklists')->where('status', 'solved')->count();
-        $pendingRequests = DB::table('checklists')->where('status', 'pending')->count();
+        $totalUsers = DB::table('users')->whereNull('deleted_at')->count();
+        $totalbuildings = DB::table('buildings')->whereNull('deleted_at')->count();
+        $totalclasses = DB::table('classes')->whereNull('deleted_at')->count();
+        $completedRequests = DB::table('checklists')->where('status', 'solved')->whereNull('deleted_at')->count();
+        $pendingRequests = DB::table('checklists')->where('status', 'pending')->whereNull('deleted_at')->count();
         $totalRequests = $completedRequests + $pendingRequests;
         return [
         Card::make('Total Users', $totalUsers)
