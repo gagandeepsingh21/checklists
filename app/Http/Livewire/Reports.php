@@ -53,7 +53,7 @@ class Reports extends Component implements Tables\Contracts\HasTable
                         return 'success';
                     }
                 }),
-            TextColumn::make('created_at')
+            TextColumn::make('date_created')
                 ->dateTime('d-m-Y')
                 ->sortable()
                 ->toggleable(),
@@ -68,17 +68,12 @@ class Reports extends Component implements Tables\Contracts\HasTable
     protected function getTableFilters(): array
     {
         return [ 
-            SelectFilter::make('name')
-                ->label('Name')
-                ->multiple()
-                ->options(User::pluck('name', 'id')),
-            DateFilter::make('created_at')
-                ->label(__('Created At'))
-                ->minDate(Carbon::today()->subMonth(1))
-                ->maxDate(Carbon::today()->addMonth(1))
-                ->range()
-                ->fromLabel(__('From'))
-                ->untilLabel(__('Until')),
+            // SelectFilter::make('name')
+            //     ->label('Name')
+            //     ->multiple()
+            //     ->options(User::pluck('name', 'id')),
+            DateFilter::make('date_created')
+                ->label(__('Created At')),
             Tables\Filters\SelectFilter::make('status')
             ->options([
                 'Solved' => 'Solved',
