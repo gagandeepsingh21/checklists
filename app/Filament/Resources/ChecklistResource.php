@@ -12,6 +12,7 @@ use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Card;
+use Filament\Tables\Actions\Action;
 use Illuminate\Support\Facades\Hash;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
@@ -114,9 +115,11 @@ class ChecklistResource extends Resource
                 TextColumn::make('faults_identified')
                     ->sortable()
                     ->searchable()
+                    ->limit(10)
                     ->toggleable(),
                 TextColumn::make('message')
                     ->sortable()
+                    ->limit(10)
                     ->searchable()
                     ->toggleable(),
                 BadgeColumn::make('status')

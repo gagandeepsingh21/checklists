@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use Carbon\Carbon;
 use App\Models\User;
 use Filament\Tables;
 use Livewire\Component;
@@ -16,7 +17,9 @@ use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\Layout\Panel;
 use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\Layout\Stack;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
+use Webbingbrasil\FilamentDateFilter\DateFilter;
 use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 use AlperenErsoy\FilamentExport\Actions\FilamentExportHeaderAction;
 
@@ -30,9 +33,6 @@ class Reports extends Component implements Tables\Contracts\HasTable
         ->leftJoin('users', 'users.id', '=', 'checklists.user_id');    
 }
 
-    
-
- 
     protected function getTableColumns(): array 
     {
         return [
@@ -68,13 +68,17 @@ class Reports extends Component implements Tables\Contracts\HasTable
     protected function getTableFilters(): array
     {
         return [ 
-            // Tables\Filters\SelectFilter::make('name')
-            // ->multiple()
-            // ->options(
-            //     User::query()
-            //         ->join('checklists', 'checklists.user_id', '=', 'users.id')
-            //         ->pluck('users.name', 'users.id')
-            // ),
+            SelectFilter::make('name')
+                ->label('Name')
+                ->multiple()
+                ->options(User::pluck('name', 'id')),
+            DateFilter::make('created_at')
+                ->label(__('Created At'))
+                ->minDate(Carbon::today()->subMonth(1))
+                ->maxDate(Carbon::today()->addMonth(1))
+                ->range()
+                ->fromLabel(__('From'))
+                ->untilLabel(__('Until')),
             Tables\Filters\SelectFilter::make('status')
             ->options([
                 'Solved' => 'Solved',
@@ -83,14 +87,14 @@ class Reports extends Component implements Tables\Contracts\HasTable
         ]; 
     }
     
-//     protected function getTableHeaderActions(): array
-// {
-//     return [
+    protected function getTableHeaderActions(): array
+{
+    return [
     
-//         FilamentExportHeaderAction::make('export')->button()
+        FilamentExportHeaderAction::make('export')->button()
         
-//     ];
-// }
+    ];
+}
 
 protected function getTableBulkActions(): array
 {
