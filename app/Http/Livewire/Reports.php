@@ -82,14 +82,14 @@ class Reports extends Component implements Tables\Contracts\HasTable
         ]; 
     }
     
-    protected function getTableHeaderActions(): array
-{
-    return [
+//     protected function getTableHeaderActions(): array
+// {
+//     return [
     
-        FilamentExportHeaderAction::make('export')->button()
+//         FilamentExportHeaderAction::make('export')->button()
         
-    ];
-}
+//     ];
+// }
 
 protected function getTableBulkActions(): array
 {
