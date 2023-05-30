@@ -65,6 +65,8 @@ class MyChecklist extends BaseWidget
                     return 'danger';
                 }else if ($state === 'Solved'){
                     return 'success';
+                }else if ($state === 'No Faults'){
+                    return 'secondary';
                 }
             }),
         TextColumn::make('created_at')

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Faults;
@@ -65,18 +66,20 @@ class ChecklistResource extends Resource
                             ->required(),
 
                         Select::make('class_name')
+                            ->multiple()
                             ->options(fn($get) => Classes::join('buildings', 'classes.building_id', '=', 'buildings.id')->where('building_name', $get('building_name'))->pluck('class_name', 'class_name'))
-                            ->visible(fn($get) => $get('building_name') !== null),
+                            ->visible(fn($get) => !empty($get('building_name'))),
                         Select::make('faults_identified')
                             ->multiple()
                             ->options(Faults::all()->pluck('faults_identified', 'faults_identified'))
                             ->searchable(),
-                        MarkdownEditor::make('message')
-                            ->required(),
+                        MarkdownEditor::make('message'),
                         DatePicker::make('date_created')
-                            ->required(),
+                            ->default(Carbon::now()),
                         Select::make('status')
+                            ->default('No Faults')
                             ->options([
+                                'No Faults' => 'No Faults',
                                 'Pending' => ' Pending',
                                 'Solved' => 'Solved',
                             ])
@@ -130,6 +133,8 @@ class ChecklistResource extends Resource
                             return 'danger';
                         }else if ($state === 'Solved'){
                             return 'success';
+                        }else if ($state === 'No Faults'){
+                            return 'secondary';
                         }
                     }),
                 TextColumn::make('date_created')
@@ -155,6 +160,7 @@ class ChecklistResource extends Resource
                 ->options([
                     'Solved' => 'Solved',
                     'Pending' => ' Pending',
+                    'No Faults' => 'No Faults'
                 ])
             ])
             ->actions([

@@ -51,6 +51,8 @@ class Reports extends Component implements Tables\Contracts\HasTable
                         return 'danger';
                     }else if ($state === 'Solved'){
                         return 'success';
+                    }else if ($state === 'No Faults'){
+                        return 'secondary';
                     }
                 }),
             TextColumn::make('date_created')
@@ -68,17 +70,19 @@ class Reports extends Component implements Tables\Contracts\HasTable
     protected function getTableFilters(): array
     {
         return [ 
-            // SelectFilter::make('name')
-            //     ->label('Name')
-            //     ->multiple()
-            //     ->options(User::pluck('name', 'id')),
+
             DateFilter::make('date_created')
-                ->label(__('Created At')),
+            ->label(__('Created At'))
+            ->range()
+            ->fromLabel(__('From'))
+            ->untilLabel(__('Until')),
             Tables\Filters\SelectFilter::make('status')
             ->options([
                 'Solved' => 'Solved',
                 'Pending' => ' Pending',
+                'No Faults' => 'No Faults'
             ])
+            
         ]; 
     }
     

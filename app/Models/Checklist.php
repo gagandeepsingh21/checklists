@@ -29,6 +29,7 @@ class Checklist extends Model
     }
     protected $options = [
         'faults_identified' => 'array',
+        'class_name' => 'array'
     ];
     protected $fillable = [
        'user_id',
@@ -45,6 +46,9 @@ class Checklist extends Model
         if (is_array($this->faults_identified)) {
             $this->faults_identified = implode(',', $this->faults_identified);
         }
+        if (is_array($this->class_name)) {
+            $this->class_name = implode(',', $this->class_name);
+        }
         return parent::save($options);
     }
 
@@ -52,4 +56,10 @@ class Checklist extends Model
     {
         return is_string($value) ? explode(',', $value) : $value;
     }
+
+    public function getClassNameAttribute($value)
+    {
+        return is_string($value) ? explode(',', $value) : $value;
+    }
+
 }

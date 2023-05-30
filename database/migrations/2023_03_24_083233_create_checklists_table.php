@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('class_name')->nullable();
             $table->string('faults_identified');
             $table->longText('message');
-            $table->string('status')->default('pending');
+            $table->string('status')->default('No Faults');
             $table->date('date_created')->nullable();
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
