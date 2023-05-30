@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('building_name');
             $table->string('class_name')->nullable();
             $table->string('faults_identified');
-            $table->string('message');
+            $table->longText('message');
             $table->string('status')->default('pending');
             $table->date('date_created')->nullable();
             $table->timestamps();
