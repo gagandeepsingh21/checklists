@@ -45,7 +45,7 @@ class ChecklistMail extends Mailable
         return new Content(
             markdown: 'emails.checklist.created',
             with: [
-                'building_name' => $this->Checklist->building_name,
+                'building_name' => implode(', ', $this->Checklist->building_name),
                 'class_name' => implode(', ', $this->Checklist->class_name),
                 'faults_identified'=> implode(', ', $this->Checklist->faults_identified),                
                 'message' => $this->Checklist->message,

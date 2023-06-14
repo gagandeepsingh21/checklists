@@ -58,17 +58,26 @@ class ChecklistResource extends Resource
                     ->schema([ 
                         Hidden::make('user_id')
                             ->default(auth()->id()),
-                            
-                        Select::make('building_name')
+                            Select::make('building_name')
+                            ->multiple()
                             ->options(Buildings::all()->pluck('building_name', 'building_name'))
                             ->searchable()
                             ->reactive()
                             ->required(),
-
-                        Select::make('class_name')
+                        
+                            Select::make('class_name')
                             ->multiple()
-                            ->options(fn($get) => Classes::join('buildings', 'classes.building_id', '=', 'buildings.id')->where('building_name', $get('building_name'))->pluck('class_name', 'class_name'))
+                            ->options(function ($get) {
+                                if (!empty($get('building_name'))) {
+                                    return Classes::join('buildings', 'classes.building_id', '=', 'buildings.id')
+                                        ->whereIn('building_name', $get('building_name'))
+                                        ->pluck('class_name', 'class_name');
+                                } else {
+                                    return [];
+                                }
+                            })
                             ->visible(fn($get) => !empty($get('building_name'))),
+                        
                         Select::make('faults_identified')
                             ->multiple()
                             ->options(Faults::all()->pluck('faults_identified', 'faults_identified'))

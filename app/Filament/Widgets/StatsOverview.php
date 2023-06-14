@@ -25,7 +25,7 @@ public static function canView(): bool
         $totalclasses = DB::table('classes')->whereNull('deleted_at')->count();
         $completedRequests = DB::table('checklists')->where('status', 'solved')->whereNull('deleted_at')->count();
         $pendingRequests = DB::table('checklists')->where('status', 'pending')->whereNull('deleted_at')->count();
-        $totalRequests = $completedRequests + $pendingRequests;
+        $totalRequests = DB::table('checklists')->whereNull('deleted_at')->count();
         return [
         Card::make('Total Users', $totalUsers)
             ->description($totalUsers. ' ' .'Users')
