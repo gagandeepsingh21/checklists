@@ -16,7 +16,10 @@ class CreateChecklist extends CreateRecord
     protected function getCreatedNotification(): ?Notification
     {   
      
-        Mail::to(Auth::user()->email)->send(new ChecklistMail($this->record));
+        Mail::to(Auth::user()->email)
+            ->cc('mkihara@strathmore.edu')
+            ->bcc('Bogutu@strathmore.edu')
+            ->send(new ChecklistMail($this->record));
         return parent::getCreatedNotification();
     }
 
