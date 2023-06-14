@@ -58,14 +58,15 @@ class ChecklistResource extends Resource
                     ->schema([ 
                         Hidden::make('user_id')
                             ->default(auth()->id()),
-                            Select::make('building_name')
+                        Select::make('building_name')
                             ->multiple()
                             ->options(Buildings::all()->pluck('building_name', 'building_name'))
                             ->searchable()
+                            ->multiple()
                             ->reactive()
                             ->required(),
                         
-                            Select::make('class_name')
+                        Select::make('class_name')
                             ->multiple()
                             ->options(function ($get) {
                                 if (!empty($get('building_name'))) {
