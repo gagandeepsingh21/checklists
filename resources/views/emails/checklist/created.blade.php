@@ -48,9 +48,9 @@ Date Checked
 @endcomponent
 
 
-<!-- <x-mail::button :url="''">
-Button Text
-</x-mail::button> -->
+<x-mail::button :url=$link>
+View Checklist
+</x-mail::button>
 
 Best Regards,<br>
 <i>ICT CheckList Team</i>

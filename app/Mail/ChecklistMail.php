@@ -17,9 +17,12 @@ class ChecklistMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(Checklist $checklist)
+    public $link;
+
+    public function __construct(Checklist $checklist, $link)
     {
         $this->Checklist = $checklist;
+        $this->link = $link;
     }
 
     /**
@@ -50,7 +53,8 @@ class ChecklistMail extends Mailable
                 'faults_identified'=> implode(', ', $this->Checklist->faults_identified),                
                 'message' => $this->Checklist->message,
                 'status' => $this->Checklist->status,
-                'date_created' => $this->Checklist->date_created
+                'date_created' => $this->Checklist->date_created,
+                'link'=> $this->link,
             ],
         );
     }
