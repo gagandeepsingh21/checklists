@@ -2,9 +2,11 @@
 
 namespace App\Filament\Widgets;
 
+use Carbon\Carbon;
 use App\Models\Checklist;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Filament\Forms\Components\DatePicker;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
@@ -40,25 +42,23 @@ class CheckListChart extends ApexChartWidget
      *
      * @return array
      */
+    protected function getFormSchema(): array
+    {
+        return [
+            DatePicker::make('created_at')->default(now()->subDays(10)->toDateString()), 
+            //DatePicker::make('updated_at')->default(now()->toDateString()), 
+        ];
+    }
     protected function getOptions(): array
     {
         $startDate = null;
         $endDate = now();
 
-        switch ($this->filter) {
-            case 'today':
-                $startDate = now()->startOfDay();
-                break;
-            case 'week':
-                $startDate = now()->subWeek()->startOfWeek();
-                break;
-            case 'month':
-                $startDate = now()->subMonth()->startOfMonth();
-                break;
-            case 'year':
-                $startDate = now()->startOfYear();
-                break;
-        }
+        $dateCreated = $this->filterFormData['created_at'];
+        //$dateUpdated = $this->filterFormData['date_updated'];
+    
+        $startDate = Carbon::parse($dateCreated)->startOfDay();
+        $endDate = now();
 
         $completedRequests = DB::table('checklists')
             ->where('status', 'solved')
@@ -92,10 +92,10 @@ class CheckListChart extends ApexChartWidget
     protected function getFilters(): ?array
     {
         return [
-            'today' => 'Today',
-            'week' => 'Last week',
-            'month' => 'Last month',
-            'year' => 'This year',
+            // 'today' => 'Today',
+            // 'week' => 'Last week',
+            // 'month' => 'Last month',
+            // 'year' => 'This year',
         ];
     }
 }
