@@ -37,7 +37,7 @@ class Reports extends Component implements Tables\Contracts\HasTable
     {
         return [
 
-            TextColumn::make('id')->sortable(),
+            TextColumn::make('id')->sortable()->url(fn (Checklist $record):string => route('filament.resources.checklists.view', ['record' => $record])),
             TextColumn::make('name')->sortable()->searchable(),
             TextColumn::make('building_name')->sortable()->searchable(),
             TextColumn::make('class_name')->sortable()->searchable(),
@@ -51,8 +51,6 @@ class Reports extends Component implements Tables\Contracts\HasTable
                         return 'danger';
                     }else if ($state === 'Solved'){
                         return 'success';
-                    }else if ($state === 'No Faults'){
-                        return 'secondary';
                     }
                 }),
             TextColumn::make('date_created')
@@ -70,19 +68,17 @@ class Reports extends Component implements Tables\Contracts\HasTable
     protected function getTableFilters(): array
     {
         return [ 
-
+            // SelectFilter::make('name')
+            //     ->label('Name')
+            //     ->multiple()
+            //     ->options(User::pluck('name', 'id')),
             DateFilter::make('date_created')
-            ->label(__('Created At'))
-            ->range()
-            ->fromLabel(__('From'))
-            ->untilLabel(__('Until')),
+                ->label(__('Created At')),
             Tables\Filters\SelectFilter::make('status')
             ->options([
                 'Solved' => 'Solved',
                 'Pending' => ' Pending',
-                'No Faults' => 'No Faults'
             ])
-            
         ]; 
     }
     
