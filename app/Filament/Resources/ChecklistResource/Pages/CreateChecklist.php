@@ -14,10 +14,11 @@ class CreateChecklist extends CreateRecord
 {
     protected static string $resource = ChecklistResource::class;
     protected function getCreatedNotification(): ?Notification
-    {   
-        // $bccMails = ['bogutu@strathmore.edu','bulonza.ntumwa@strathmore.edu','lsally@strathmore.edu','msuka@strathmore.edu','skioko@strathmore.edu'];
+    { 
+        $ccMails = ['audiovisuals@strathmore.edu'];
+    //$bccMails = ['bogutu@strathmore.edu','bulonza.ntumwa@strathmore.edu','lsally@strathmore.edu','msuka@strathmore.edu','skioko@strathmore.edu'];
         Mail::to(Auth::user()->email)
-            ->cc('audiovisuals@strathmore.edu')
+            ->cc($ccMails)
             ->send(new ChecklistMail($this->record,route('filament.resources.checklists.index')));
         return parent::getCreatedNotification();
     }
