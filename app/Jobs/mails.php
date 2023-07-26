@@ -46,8 +46,9 @@ class mails implements ShouldQueue
         if($checklists != null){
             //Log::info($checklists);
             foreach (array_unique($users) as $user){
+                $ccMails = ['audiovisuals@strathmore.edu'];
             Mail::to($user)
-                ->cc('audiovisuals@strathmore.edu')
+                ->cc($ccMails)
                 ->queue(new Reminder($checklists,route('filament.resources.checklists.index')));
             }
         }
