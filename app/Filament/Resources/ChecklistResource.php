@@ -4,11 +4,14 @@ namespace App\Filament\Resources;
 
 use Carbon\Carbon;
 use Filament\Forms;
+use App\Models\User;
 use Filament\Tables;
 use App\Models\Faults;
 use App\Models\Classes;
 use App\Models\Buildings;
 use App\Models\Checklist;
+use App\Models\Department;
+use App\Models\FaultChecked;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Filament\Resources\Resource;
@@ -58,38 +61,45 @@ class ChecklistResource extends Resource
                     ->schema([ 
                         Hidden::make('user_id')
                             ->default(auth()->id()),
-                        Select::make('building_name')
-                            ->multiple()
-                            ->options(Buildings::all()->pluck('building_name', 'building_name'))
-                            ->searchable()
-                            ->multiple()
-                            ->reactive()
-                            ->required(),
+                            Select::make('building_id')
+                                ->label('Building Name')
+                                ->options(Buildings::all()->pluck('building_name', 'id')->toArray())
+                                ->searchable()
+                                ->reactive()
+                                ->required(),
+                            
+                            Select::make('class_id')
+                                ->label('Class Name')
+                                ->options(function ($get) {
+                                    $building_id = $get('building_id');
+                                    if (!empty($building_id)) {
+                                        $classes =  Classes::where('building_id', $building_id)->get();
+                                         return  $classes->pluck('class_name', 'id')->toArray();
+                                    } else {
+                                        return [];
+                                    }
+                                })
+                                ->visible(fn ($get) => !empty($get('building_id'))),
+                            
                         
-                        Select::make('class_name')
-                            ->multiple()
-                            ->options(function ($get) {
-                                if (!empty($get('building_name'))) {
-                                    return Classes::join('buildings', 'classes.building_id', '=', 'buildings.id')
-                                        ->whereIn('building_name', $get('building_name'))
-                                        ->pluck('class_name', 'class_name');
-                                } else {
-                                    return [];
-                                }
-                            })
-                            ->visible(fn($get) => !empty($get('building_name'))),
-                        
-                        Select::make('faults_identified')
-                            ->multiple()
-                            ->options(Faults::all()->pluck('faults_identified', 'faults_identified'))
+                        Select::make('fault_id')
+                            ->label('Fault Identified')
+                            ->options(Faults::all()->pluck('faults_identified', 'id'))
                             ->searchable(),
-                        MarkdownEditor::make('message'),
+                        MarkdownEditor::make('message')
+                            ->label('Message'),
                         DatePicker::make('date_created')
                             ->default(Carbon::now()),
+                        Select::make('resolved_by')
+                            ->label('Resolved by')
+                            ->options(User::whereHas('roles',function($query){
+                                $query->where('name','Admin');
+                            })->pluck('name','id')),
+                        DatePicker::make('date_resolved')
+                            ->label('Date Resolved'),
                         Select::make('status')
-                            ->default('No Faults')
+                            ->default('Pending')
                             ->options([
-                                'No Faults' => 'No Faults',
                                 'Pending' => ' Pending',
                                 'Solved' => 'Solved',
                             ])
@@ -115,38 +125,62 @@ class ChecklistResource extends Resource
     // ]
     public static function table(Table $table): Table
     {
+        // $faults = FaultChecked::find('fault_id');
+        // $faultIdentified = $faults->fault_identified;
         return $table
             ->columns([
                 // TextColumn::make('id')
                 //     ->sortable(),
                 TextColumn::make('building_name')
+                    ->getStateUsing(function($record){
+                    if(is_null($record->class) ){
+                        return "NO Buildings";
+                    }else{
+                        // dd($record);
+                    $buildings = Buildings::find($record?->class)->first();
+                    // dd($faults);
+                    //dd($record?->faultschecked);
+                    return $buildings?->building_name;
+                    }
+                })
                     ->sortable()
                     ->searchable(),
-                TextColumn::make('class_name')
+                TextColumn::make('class.class_name')
                     ->sortable()
                     ->searchable(),
-                TextColumn::make('faults_identified')
-                    ->sortable()
-                    ->searchable()
-                    ->limit(10)
-                    ->toggleable(),
-                TextColumn::make('message')
-                    ->sortable()
-                    ->limit(10)
-                    ->searchable()
-                    ->toggleable(),
-                BadgeColumn::make('status')
-                    ->sortable()
-                    ->searchable()
-                    ->color(static function ($state): string {
-                        if ($state === 'Pending') {
-                            return 'danger';
-                        }else if ($state === 'Solved'){
-                            return 'success';
-                        }else if ($state === 'No Faults'){
-                            return 'secondary';
+                TextColumn::make('fault_id')
+                    ->getStateUsing(function($record){
+                        if(count($record->faultschecked) < 1){
+                            return "NO Faults";
+                        }else{
+                            // dd($record);
+                        $faults = Faults::find($record?->faultschecked)->first();
+                        // dd($faults);
+                        //dd($record?->faultschecked);
+                        return $faults?->faults_identified;
                         }
-                    }),
+                    })
+                    ->sortable()
+                    ->searchable()
+                    ->limit(10)
+                    ->toggleable(),
+                TextColumn::make('faultschecked.message')
+                    ->sortable()
+                    ->limit(10)
+                    ->searchable()
+                    ->toggleable(),
+                // BadgeColumn::make('status')
+                //     ->sortable()
+                //     ->searchable()
+                //     ->color(static function ($state): string {
+                //         if ($state === 'Pending') {
+                //             return 'danger';
+                //         }else if ($state === 'Solved'){
+                //             return 'success';
+                //         }else if ($state === 'No Faults'){
+                //             return 'secondary';
+                //         }
+                //     }),
                 TextColumn::make('date_created')
                     ->label('Date Checked')
                     ->dateTime('d-m-Y')
@@ -170,7 +204,6 @@ class ChecklistResource extends Resource
                 ->options([
                     'Solved' => 'Solved',
                     'Pending' => ' Pending',
-                    'No Faults' => 'No Faults'
                 ])
             ])
             ->actions([
@@ -193,25 +226,25 @@ class ChecklistResource extends Resource
         ];
     }
 
-    public static function getGlobalSearchResultDetails(Model $record): array
-    {
-        $buildingName = $record->building_name;
-        if (is_array($buildingName)) {
-            $buildingName = implode(', ', $buildingName);
-        }
-        $faultsIdentified = $record->faults_identified;
-        if (is_array($faultsIdentified)) {
-            $faultsIdentified = implode(', ', $faultsIdentified);
-        }
-        $className = $record->class_name;
-        if (is_array($className)) {
-            $className = implode(', ', $className);
-        }
-        return [
-            'Class name' => $record->class_name,
-            'Faults identified' => $faultsIdentified,
-        ];
-    }
+    // public static function getGlobalSearchResultDetails(Model $record): array
+    // {
+    //     $buildingName = $record->building_name;
+    //     if (is_array($buildingName)) {
+    //         $buildingName = implode(', ', $buildingName);
+    //     }
+    //     $faultsIdentified = $record->faults_identified;
+    //     if (is_array($faultsIdentified)) {
+    //         $faultsIdentified = implode(', ', $faultsIdentified);
+    //     }
+    //     $className = $record->class_name;
+    //     if (is_array($className)) {
+    //         $className = implode(', ', $className);
+    //     }
+    //     return [
+    //         'Class name' => $record->class_name,
+    //         'Faults identified' => $faultsIdentified,
+    //     ];
+    // }
 
 
     public static function getWidgets(): array

@@ -2,7 +2,12 @@
 
 namespace App\Mail;
 
+use App\Models\Faults;
+use App\Models\Classes;
+use App\Models\Buildings;
 use App\Models\Checklist;
+use App\Models\Resolution;
+use App\Models\FaultChecked;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
@@ -18,10 +23,13 @@ class ChecklistMail extends Mailable
      * Create a new message instance.
      */
     public $link;
-
-    public function __construct(Checklist $checklist, $link)
+    public $faultchecked;
+    public $resolution;
+    public function __construct(Checklist $checklist,Resolution $resolution,FaultChecked $faultchecked, $link)
     {
         $this->Checklist = $checklist;
+        $this->Resolution = $resolution;
+        $this->FaultChecked = $faultchecked;
         $this->link = $link;
     }
 
@@ -45,14 +53,17 @@ class ChecklistMail extends Mailable
      */
     public function content(): Content
     {
+            $faults = Faults::find($this->FaultChecked->fault_id)->first();
+            $classes = Classes::find($this->Checklist->class_id);
+            $buildings = $classes->building;
         return new Content(
             markdown: 'emails.checklist.created',
             with: [
-                'building_name' => implode(', ', $this->Checklist->building_name),
-                'class_name' => implode(', ', $this->Checklist->class_name),
-                'faults_identified'=> implode(', ', $this->Checklist->faults_identified),                
-                'message' => $this->Checklist->message,
-                'status' => $this->Checklist->status,
+                'building_name' =>  $buildings->building_name,
+                'class_name' => $classes->class_name,
+                'faults_identified'=> $faults->faults_identified,                
+                'message' => $this->FaultChecked->message,
+                'status' => $this->Resolution->status,
                 'date_created' => $this->Checklist->date_created,
                 'link'=> $this->link,
             ],

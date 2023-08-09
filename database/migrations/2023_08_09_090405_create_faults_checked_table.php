@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('checklists', function (Blueprint $table) {
+        Schema::create('faults_checked', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->default(0);
-            $table->unsignedBigInteger('class_id')->default(0);
-            $table->date('date_created')->nullable();
+            $table->unsignedBigInteger('checklist_id')->default(0);
+            $table->unsignedBigInteger('fault_id')->default(0);
+            $table->longText('message')->nullable();
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('class_id')->references('id')->on('classes');
+            $table->foreign('checklist_id')->references('id')->on('checklists');
+            $table->foreign('fault_id')->references('id')->on('faults');
         });
     }
 
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('checklists');
+        Schema::dropIfExists('faults_checked');
     }
 };
