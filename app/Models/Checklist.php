@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Faults;
 use App\Models\Classes;
 use App\Models\Buildings;
 use App\Models\Resolution;
@@ -28,7 +29,10 @@ class Checklist extends Model
     public function resolution(){
         return $this->hasMany(Resolution::class);
     }
-
+    public function faults()
+    {
+        return $this->belongsToMany(Faults::class, 'checklist_fault','checklist_id','fault_id');
+    }
     protected $fillable = [
        'user_id',
        'class_id',

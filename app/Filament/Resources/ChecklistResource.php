@@ -55,6 +55,7 @@ class ChecklistResource extends Resource
 
     public static function form(Form $form): Form
     { 
+
         return $form
             ->schema([
                 Card::make()
@@ -63,7 +64,7 @@ class ChecklistResource extends Resource
                             ->default(auth()->id()),
                             Select::make('building_id')
                                 ->label('Building Name')
-                                ->options(Buildings::all()->pluck('building_name', 'id')->toArray())
+                                ->options(Buildings::all()?->pluck('building_name', 'id')?->toArray())
                                 ->searchable()
                                 ->reactive()
                                 ->required(),
@@ -74,7 +75,7 @@ class ChecklistResource extends Resource
                                     $building_id = $get('building_id');
                                     if (!empty($building_id)) {
                                         $classes =  Classes::where('building_id', $building_id)->get();
-                                         return  $classes->pluck('class_name', 'id')->toArray();
+                                         return  $classes?->pluck('class_name', 'id')?->toArray();
                                     } else {
                                         return [];
                                     }
@@ -83,6 +84,7 @@ class ChecklistResource extends Resource
                             
                         
                         Select::make('fault_id')
+                            ->multiple()
                             ->label('Fault Identified')
                             ->options(Faults::all()->pluck('faults_identified', 'id'))
                             ->searchable(),
@@ -125,39 +127,37 @@ class ChecklistResource extends Resource
     // ]
     public static function table(Table $table): Table
     {
-        // $faults = FaultChecked::find('fault_id');
-        // $faultIdentified = $faults->fault_identified;
+
         return $table
             ->columns([
                 // TextColumn::make('id')
                 //     ->sortable(),
-                TextColumn::make('building_name')
+                TextColumn::make('class.building.building_name')
+                    ->label('Building Name')
                     ->getStateUsing(function($record){
                     if(is_null($record->class) ){
-                        return "NO Buildings";
+                        return "No Buildings";
                     }else{
-                        // dd($record);
                     $buildings = Buildings::find($record?->class)->first();
-                    // dd($faults);
-                    //dd($record?->faultschecked);
                     return $buildings?->building_name;
                     }
                 })
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('class.class_name')
+                    ->label('Class Name')
                     ->sortable()
                     ->searchable(),
-                TextColumn::make('fault_id')
-                    ->getStateUsing(function($record){
-                        if(count($record->faultschecked) < 1){
-                            return "NO Faults";
-                        }else{
-                            // dd($record);
-                        $faults = Faults::find($record?->faultschecked)->first();
-                        // dd($faults);
-                        //dd($record?->faultschecked);
-                        return $faults?->faults_identified;
+                    TextColumn::make('faultschecked.fault_id')
+                    ->label('Faults Identified')
+                    ->getStateUsing(function ($record) {
+                        if (count($record->faultschecked) < 1) {
+                            return "No Faults";
+                        } else {
+                        //     $faultschecked = $record->faultschecked->first();
+                        //    //dd($faultschecked?->fault_id);
+                            $faultsi = Faults::find($record->id)?->first();
+                            return $faultsi?->faults_identified;
                         }
                     })
                     ->sortable()
@@ -165,22 +165,28 @@ class ChecklistResource extends Resource
                     ->limit(10)
                     ->toggleable(),
                 TextColumn::make('faultschecked.message')
+                    ->label('Message')
                     ->sortable()
                     ->limit(10)
                     ->searchable()
                     ->toggleable(),
-                // BadgeColumn::make('status')
-                //     ->sortable()
-                //     ->searchable()
-                //     ->color(static function ($state): string {
-                //         if ($state === 'Pending') {
-                //             return 'danger';
-                //         }else if ($state === 'Solved'){
-                //             return 'success';
-                //         }else if ($state === 'No Faults'){
-                //             return 'secondary';
-                //         }
-                //     }),
+                BadgeColumn::make('faultschecked.resolution.status')
+                    ->sortable()
+                    ->searchable()
+                    ->getStateUsing(function($record){
+
+                        $faultschecked = $record->faultschecked->first();
+                        $resolution = $faultschecked?->resolution?->first();
+                        return $resolution?->status;
+                        
+                    })
+                    ->color(static function ($state): string {
+                        if ($state === 'Pending') {
+                            return 'danger';
+                        }else{
+                            return 'success';
+                        }
+                    }),
                 TextColumn::make('date_created')
                     ->label('Date Checked')
                     ->dateTime('d-m-Y')
@@ -205,6 +211,7 @@ class ChecklistResource extends Resource
                     'Solved' => 'Solved',
                     'Pending' => ' Pending',
                 ])
+
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()->iconButton(),

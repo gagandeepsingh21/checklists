@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::create('faults', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->default(0);
             $table->string('faults_identified');
+            $table->softDeletes();
             $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

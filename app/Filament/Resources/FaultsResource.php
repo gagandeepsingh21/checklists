@@ -42,7 +42,6 @@ class FaultsResource extends Resource
             ->schema([
                 Fieldset::make('Add Faults')
                     ->schema([ 
-                        Hidden::make('user_id')->default(auth()->id()),
                         TextInput::make('faults_identified')->required()->unique(),
                 ])
             ]);

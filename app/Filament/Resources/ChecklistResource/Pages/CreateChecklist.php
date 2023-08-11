@@ -19,6 +19,9 @@ class CreateChecklist extends CreateRecord
     public function afterCreate(){
         if(! is_null($this->data['fault_id'])){
             $fault = Faults::firstWhere('id',$this->data['fault_id']);
+            $this->record->faults()->attach($this->data['fault_id']);
+
+            
             $faultsChecked = $fault->faultschecked()->create([
                 'checklist_id'  => $this->record->id,
                 'message' => $this->data['message'],
@@ -42,12 +45,10 @@ class CreateChecklist extends CreateRecord
         $ccMails = ['audiovisuals@strathmore.edu'];
         $checklist = $this->record;
         
-        // Assuming that $checklist->faultschecked is a collection of FaultChecked objects
-        // You need to select a specific FaultChecked object from the collection
-        $faultsChecked = $checklist->faultschecked->first(); // You might need to adjust this logic
+
+        $faultsChecked = $checklist->faultschecked->first(); 
         
         if ($faultsChecked) {
-            // Assuming you have relationships defined for FaultChecked and Resolution
             $resolution = $faultsChecked->resolution->first();
             //dd($resolution);
             Mail::to(Auth::user()->email)

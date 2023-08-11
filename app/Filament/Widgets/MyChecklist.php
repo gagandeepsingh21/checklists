@@ -4,6 +4,8 @@ namespace App\Filament\Widgets;
 
 use Closure;
 use Filament\Tables;
+use App\Models\Faults;
+use App\Models\Buildings;
 use App\Models\Checklist;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -35,50 +37,124 @@ class MyChecklist extends BaseWidget
     protected function getTableColumns(): array
     {
         return [
-            Split::make([
-                TextColumn::make('building_name')
-                ->searchable(),
-                TextColumn::make('class_name')
-                ->searchable(),
-                TextColumn::make('faults_identified')
-                ->searchable(),
-    
-            ]),
-            Panel::make([
-                Stack::make([
-        TextColumn::make('id')
-            ->sortable(),
+
         TextColumn::make('building_name')
+            ->getStateUsing(function($record){
+            if(is_null($record->class) ){
+                return "NO Buildings";
+            }else{
+                // dd($record);
+            $buildings = Buildings::find($record?->class)->first();
+            // dd($faults);
+            //dd($record?->faultschecked);
+            return $buildings?->building_name;
+            }
+        })
             ->sortable()
             ->searchable(),
-        TextColumn::make('class_name')
+        TextColumn::make('class.class_name')
             ->sortable()
             ->searchable(),
-        TextColumn::make('faults_identified')
+        TextColumn::make('fault_id')
+            ->label('Fault Identified')
+            ->getStateUsing(function($record){
+                if(count($record->faultschecked) < 1){
+                    return "NO Faults";
+                }else{
+                    // dd($record);
+                $faults = Faults::find($record?->faultschecked)->first();
+                // dd($faults);
+                //dd($record?->faultschecked);
+                return $faults?->faults_identified;
+                }
+            })
             ->sortable()
-            ->searchable(),
+            ->searchable()
+            ->limit(10)
+            ->toggleable(),
+        TextColumn::make('faultschecked.message')
+            ->label('Message')
+            ->sortable()
+            ->limit(10)
+            ->searchable()
+            ->toggleable(),
         BadgeColumn::make('status')
             ->sortable()
             ->searchable()
+            ->getStateUsing(function($record){
+
+                $faultschecked = $record->faultschecked->first();
+                $resolution = $faultschecked?->resolution?->first();
+                return $resolution?->status;
+                
+            })
             ->color(static function ($state): string {
                 if ($state === 'Pending') {
                     return 'danger';
-                }else if ($state === 'Solved'){
+                }else{
                     return 'success';
-                }else if ($state === 'No Faults'){
-                    return 'secondary';
                 }
             }),
-        TextColumn::make('created_at')
+        TextColumn::make('date_created')
+            ->label('Date Checked')
             ->dateTime('d-m-Y')
             ->sortable()
-        ]),
-        ])->collapsible(),
+            ->searchable()
+            ->toggleable(),
+        // TextColumn::make('created_at')
+        //     ->dateTime('d-m-Y')
+        //     ->sortable()
+        //     ->searchable()
+        //     ->toggleable(),
+        // TextColumn::make('deleted_at')
+        //     ->dateTime('d-m-Y')
+        //     ->sortable()
+        //     ->searchable(),
+    
+        //     Split::make([
+        //         TextColumn::make('building_name')
+        //         ->searchable(),
+        //         TextColumn::make('class_name')
+        //         ->searchable(),
+        //         TextColumn::make('faults_identified')
+        //         ->searchable(),
+    
+        //     ]),
+        //     Panel::make([
+        //         Stack::make([
+        // TextColumn::make('id')
+        //     ->sortable(),
+        // TextColumn::make('building_name')
+        //     ->sortable()
+        //     ->searchable(),
+        // TextColumn::make('class_name')
+        //     ->sortable()
+        //     ->searchable(),
+        // TextColumn::make('faults_identified')
+        //     ->sortable()
+        //     ->searchable(),
+        // // BadgeColumn::make('status')
+        // //     ->sortable()
+        // //     ->searchable()
+        // //     ->color(static function ($state): string {
+        // //         if ($state === 'Pending') {
+        // //             return 'danger';
+        // //         }else if ($state === 'Solved'){
+        // //             return 'success';
+        // //         }else if ($state === 'No Faults'){
+        // //             return 'secondary';
+        // //         }
+        // //     }),
+        // TextColumn::make('created_at')
+        //     ->dateTime('d-m-Y')
+        //     ->sortable()
+        // ]),
+        // ])->collapsible(),
             
         ];
     }
     protected function getTableRecordsPerPageSelectOptions(): array 
     {
-        return [5, 10, 25, 100];
+        return [5, 25, 100];
     } 
 }

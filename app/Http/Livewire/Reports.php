@@ -5,8 +5,10 @@ namespace App\Http\Livewire;
 use Carbon\Carbon;
 use App\Models\User;
 use Filament\Tables;
+use App\Models\Faults;
 use Livewire\Component;
 use Barryvdh\DomPDF\PDF;
+use App\Models\Buildings;
 use App\Models\Checklist;
 use Filament\Resources\Table;
 use App\Exports\MyModelExport;
@@ -39,29 +41,74 @@ class Reports extends Component implements Tables\Contracts\HasTable
 
             TextColumn::make('id')->sortable()->url(fn (Checklist $record):string => route('filament.resources.checklists.edit', ['record' => $record])),
             TextColumn::make('name')->sortable()->searchable()->url(fn (Checklist $record):string => route('filament.resources.checklists.edit', ['record' => $record])),
-            TextColumn::make('building_name')->sortable()->searchable(),
-            TextColumn::make('class_name')->sortable()->searchable(),
-            TextColumn::make('faults_identified')->sortable()->searchable()->toggleable(),
-            TextColumn::make('message')->sortable()->searchable()->toggleable(),
-            BadgeColumn::make('status')
-                ->sortable()
-                ->searchable()
-                ->color(static function ($state): string {
-                    if ($state === 'Pending') {
-                        return 'danger';
-                    }else if ($state === 'Solved'){
-                        return 'success';
-                    }
-                }),
-            TextColumn::make('date_created')
-                ->dateTime('d-m-Y')
-                ->sortable()
-                ->toggleable(),
+            TextColumn::make('class.building.building_name')
+            ->label('Building Name')
+            ->getStateUsing(function($record){
+            if(is_null($record->class) ){
+                return "No Buildings";
+            }else{
+            $buildings = Buildings::find($record?->class)->first();
+            return $buildings?->building_name;
+            }
+        })
+            ->sortable()
+            ->searchable(),
+        TextColumn::make('class.class_name')
+            ->label('Class Name')
+            ->sortable()
+            ->searchable(),
+        TextColumn::make('faultschecked.fault_id')
+            ->label('Faults Identified')
+            ->getStateUsing(function($record){
+                if(count($record->faultschecked) < 1){
+                    return "No Faults";
+                }else{ 
+                $faults = Faults::find($record?->faultschecked)->first();
+                return $faults?->faults_identified;
+                }
+            })
+            ->sortable()
+            ->searchable()
+            ->limit(10)
+            ->toggleable(),
+        TextColumn::make('faultschecked.message')
+            ->label('Message')
+            ->sortable()
+            ->limit(10)
+            ->searchable()
+            ->toggleable(),
+        BadgeColumn::make('faultschecked.resolution.status')
+            ->sortable()
+            ->searchable()
+            ->getStateUsing(function($record){
+
+                $faultschecked = $record->faultschecked->first();
+                $resolution = $faultschecked?->resolution?->first();
+                return $resolution?->status;
                 
-            // TextColumn::make('deleted_at')
-            //     ->dateTime('d-m-Y')
-            //     ->sortable()
-            //     ->searchable(),
+            })
+            ->color(static function ($state): string {
+                if ($state === 'Pending') {
+                    return 'danger';
+                }else{
+                    return 'success';
+                }
+            }),
+        TextColumn::make('date_created')
+            ->label('Date Checked')
+            ->dateTime('d-m-Y')
+            ->sortable()
+            ->searchable()
+            ->toggleable(),
+        // TextColumn::make('created_at')
+        //     ->dateTime('d-m-Y')
+        //     ->sortable()
+        //     ->searchable()
+        //     ->toggleable(),
+        // TextColumn::make('deleted_at')
+        //     ->dateTime('d-m-Y')
+        //     ->sortable()
+        //     ->searchable(),
             
         ];
     }

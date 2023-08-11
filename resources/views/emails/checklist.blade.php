@@ -10,7 +10,12 @@
 | **Building name**| **Class Name** |**Faults Identified**|**Message**|**Status**|**Date Created**|
 | ------------- |:-------------:| --------:| ------------- |:-------------:| --------:|
 @foreach($date_created as $date )
-|{{ implode(', ',$date->building_name) }}|{{ implode(', ',$date->class_name) }}| {{ implode(', ', $date->faults_identified) }} |{{ $date->message }}|{{ $date->status }}|{{ $date->created_at }}|
+@php 
+$faultschecked = $date->faultschecked->first();
+$faults = App\Models\Faults::find($faultschecked->fault_id)?->first();
+$resolution = $faultschecked->resolution?->first();
+@endphp
+|{{ $date->class->building->building_name }}|{{ $date->class->class_name }}| {{ $faults?->faults_identified }} |{{ $faultschecked?->message }}|{{ $resolution->status }}|{{ $date->created_at }}|
 @endforeach
 </x-mail::table>
 

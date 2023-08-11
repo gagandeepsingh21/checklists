@@ -33,7 +33,9 @@ class mails implements ShouldQueue
      */
     public function handle(): void
     {
-        $myChecklists = Checklist::where('status','pending')->get();
+        $myChecklists = Checklist::whereHas('faultschecked.resolution', function($query){
+            $query->where('status','Pending');
+        })->get();
         $checklists = [];
         $users = [];
         foreach($myChecklists as $checklist){

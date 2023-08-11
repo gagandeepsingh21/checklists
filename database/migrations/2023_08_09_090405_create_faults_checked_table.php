@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('faults_checked', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('checklist_id')->default(0);
-            $table->unsignedBigInteger('fault_id')->default(0);
+            $table->unsignedBigInteger('fault_id')->nullable();
             $table->longText('message')->nullable();
             $table->timestamps();
             $table->softDeletes();
