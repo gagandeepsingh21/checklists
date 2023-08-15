@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('checklists', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->default(0);
-            $table->unsignedBigInteger('class_id')->default(0);
+            $table->unsignedBigInteger('class_id')->nullable();
             $table->date('date_created')->nullable();
             $table->timestamps();
             $table->softDeletes();

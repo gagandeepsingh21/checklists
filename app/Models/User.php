@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Resolution;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
@@ -25,6 +26,10 @@ class User extends Authenticatable
     public function checklists()
     {
         return $this->hasMany(Checklist::class);
+    }
+    public function resolutions()
+    {
+        return $this->hasMany(Resolution::class);
     }
     
     protected $fillable = [

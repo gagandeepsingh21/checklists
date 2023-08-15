@@ -2,12 +2,16 @@
 
 namespace App\Mail;
 
+use App\Models\Faults;
+use App\Models\Classes;
+use App\Models\Resolution;
+use App\Models\FaultChecked;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class Reminder extends Mailable
 {
@@ -45,6 +49,7 @@ class Reminder extends Mailable
      */
     public function content(): Content
     {
+
         return new Content(
             markdown: 'emails.checklist',
             with: [

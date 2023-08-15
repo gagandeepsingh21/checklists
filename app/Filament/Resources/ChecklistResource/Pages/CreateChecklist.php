@@ -17,9 +17,11 @@ class CreateChecklist extends CreateRecord
     protected static string $resource = ChecklistResource::class;
 
     public function afterCreate(){
+        // $this->record->class()->attach($this->data['class_id']);
         if(! is_null($this->data['fault_id'])){
             $fault = Faults::firstWhere('id',$this->data['fault_id']);
-            $this->record->faults()->attach($this->data['fault_id']);
+            
+            $this->record->faults()->sync($this->data['fault_id']);
 
             
             $faultsChecked = $fault->faultschecked()->create([
@@ -28,8 +30,8 @@ class CreateChecklist extends CreateRecord
             ]);
             if($this->data['status'] === 'Solved'){
                 $faultsChecked->resolution()->create([
-                    'user_id' => $this->data['user_id'],
-                    'status' => "solved",
+                    'resolved_by' => $this->data['resolved_by'],
+                    'status' => "Solved",
                     'date_resolved' =>  $this->data['date_resolved'],
                 ]);
             }else{
@@ -52,7 +54,7 @@ class CreateChecklist extends CreateRecord
             $resolution = $faultsChecked->resolution->first();
             //dd($resolution);
             Mail::to(Auth::user()->email)
-                //->cc($ccMails)
+                ->cc($ccMails)
                 ->send(new ChecklistMail($this->record, $resolution, $faultsChecked, route('filament.resources.checklists.index')));
             }
     

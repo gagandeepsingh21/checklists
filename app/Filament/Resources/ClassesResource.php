@@ -53,6 +53,7 @@ class ClassesResource extends Resource
                     ->schema([
                         Hidden::make('user_id')->default(auth()->id()),
                         BelongsToSelect::make('building_id')
+                            ->label('Building Name')
                             ->options($buildings)
                             ->required(),
                         TextInput::make('class_name')->required()->unique(),

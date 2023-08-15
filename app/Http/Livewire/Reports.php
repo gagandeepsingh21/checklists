@@ -57,24 +57,15 @@ class Reports extends Component implements Tables\Contracts\HasTable
             ->label('Class Name')
             ->sortable()
             ->searchable(),
-        TextColumn::make('faultschecked.fault_id')
+        TextColumn::make('faults.faults_identified')
             ->label('Faults Identified')
-            ->getStateUsing(function($record){
-                if(count($record->faultschecked) < 1){
-                    return "No Faults";
-                }else{ 
-                $faults = Faults::find($record?->faultschecked)->first();
-                return $faults?->faults_identified;
-                }
-            })
             ->sortable()
             ->searchable()
-            ->limit(10)
             ->toggleable(),
         TextColumn::make('faultschecked.message')
             ->label('Message')
             ->sortable()
-            ->limit(10)
+            ->limit(40)
             ->searchable()
             ->toggleable(),
         BadgeColumn::make('faultschecked.resolution.status')
@@ -121,7 +112,7 @@ class Reports extends Component implements Tables\Contracts\HasTable
             //     ->options(User::pluck('name', 'id')),
             DateFilter::make('date_created')
                 ->label(__('Created At')),
-            Tables\Filters\SelectFilter::make('status')
+            Tables\Filters\SelectFilter::make('resolution.status')
             ->options([
                 'Solved' => 'Solved',
                 'Pending' => ' Pending',

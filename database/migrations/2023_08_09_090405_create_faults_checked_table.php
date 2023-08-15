@@ -18,8 +18,8 @@ return new class extends Migration
             $table->longText('message')->nullable();
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('checklist_id')->references('id')->on('checklists');
-            $table->foreign('fault_id')->references('id')->on('faults');
+            $table->foreign('checklist_id')->references('id')->on('checklists')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('fault_id')->references('id')->on('faults')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

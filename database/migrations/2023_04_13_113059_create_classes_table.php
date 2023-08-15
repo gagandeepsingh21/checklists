@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('building_id')->default(0);
             $table->string('class_name');
             $table->timestamps();
+            $table->softDeletes();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('building_id')->references('id')->on('buildings')->onDelete('cascade')->onUpdate('cascade');
         });

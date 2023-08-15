@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('resolutions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('faultschecked_id')->default(0);
+            $table->unsignedBigInteger('faultschecked_id')->nullable();
             $table->unsignedBigInteger('resolved_by')->nullable();
             $table->date('date_resolved')->nullable();
             $table->longText('status')->nullable();
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('faultschecked_id')->references('id')->on('faults_checked');
-            $table->foreign('resolved_by')->references('id')->on('users');
+            $table->foreign('faultschecked_id')->references('id')->on('faults_checked')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('resolved_by')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
