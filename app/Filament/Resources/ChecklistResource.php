@@ -79,10 +79,9 @@ class ChecklistResource extends Resource
                                     } else {
                                         return [];
                                     }
-                                }),
-                                // ->visible(fn ($get) => !empty($get('building_id'))),
-                            
-                        
+                                })
+                                ->visible(fn ($get) => !empty($get('building_id'))),
+
                         Select::make('fault_id')
                             ->multiple()
                             ->label('Fault Identified')
@@ -134,14 +133,14 @@ class ChecklistResource extends Resource
                 //     ->sortable(),
                 TextColumn::make('class.building.building_name')
                     ->label('Building Name')
-                    ->getStateUsing(function($record){
-                    if(is_null($record->class) ){
-                        return "No Buildings";
-                    }else{
-                    $buildings = Buildings::find($record?->class)->first();
-                    return $buildings?->building_name;
-                    }
-                })
+                //     ->getStateUsing(function($record){
+                //     if(is_null($record->class) ){
+                //         return "No Buildings";
+                //     }else{
+                //     $buildings = Buildings::find($record?->class)->first();
+                //     return $buildings?->building_name;
+                //     }
+                // })
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('class.class_name')
@@ -164,22 +163,22 @@ class ChecklistResource extends Resource
                     ->searchable()
                     ->limit(30)
                     ->toggleable(),
-                TextColumn::make('faultschecked.message')
+                TextColumn::make('message')
                     ->label('Message')
                     ->sortable()
                     ->limit(10)
                     ->searchable()
                     ->toggleable(),
-                BadgeColumn::make('faultschecked.resolution.status')
+                BadgeColumn::make('status')
                     ->sortable()
                     ->searchable()
-                    ->getStateUsing(function($record){
+                    // ->getStateUsing(function($record){
 
-                        $faultschecked = $record->faultschecked->first();
-                        $resolution = $faultschecked?->resolution?->first();
-                        return $resolution?->status;
+                    //     $faultschecked = $record->faultschecked->first();
+                    //     $resolution = $faultschecked?->resolution?->first();
+                    //     return $resolution?->status;
                         
-                    })
+                    // })
                     ->color(static function ($state): string {
                         if ($state === 'Pending') {
                             return 'danger';
@@ -211,11 +210,6 @@ class ChecklistResource extends Resource
                     'Pending'=>'Pending',
                     'Solved'=>'Solved'
                 ])
-                ->query(function(){
-                    $record = Checklist::whereHas('faultschecked.resolution',function($query){
-                        $query->where('status','Solved');
-                    });
-                })
 
             ])
             ->actions([

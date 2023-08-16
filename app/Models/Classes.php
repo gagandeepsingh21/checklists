@@ -15,7 +15,7 @@ class Classes extends Model
     {
         return $this->belongsTo(Buildings::class);
     }
-
+    
     
     protected $fillable = [ 
         'user_id',

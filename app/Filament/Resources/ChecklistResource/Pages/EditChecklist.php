@@ -25,67 +25,31 @@ class EditChecklist extends EditRecord
     protected function mutateFormDataBeforeFill(array $data): array
     {
         $checklist = $this->record;
-        $classes = $checklist;
-        $buildings = $classes->class->building->first();
-        $faultsChecked = $checklist?->faultschecked->first();
-        //dd($faultsChecked);
-        if ($faultsChecked) {
-            $resolution = $faultsChecked->resolution->first();
-            // dd($resolution);
-        } else {
-            $resolution = null; 
-        }
-        
+        $classes = $checklist->class;
+        $buildings = $classes->building->first();   
         // $resolution = $faultsChecked->resolution->first();
         $faults = $checklist->faults;
 
 
         $data['building_id'] = $buildings?->id; 
 
-        $data['class_id'] = $classes->class_id;
+        $classesIds = [];
+        foreach ($classes as $class) {
+            $classesIds[] = $class->id;
+        }
+        $data['class_id'] = $classesIds;
+
         $faultsIds = [];
         foreach ($faults as $fault) {
             $faultsIds[] = $fault->id;
         }
-        $data['fault_id'] = $faultsIds;
-        $data['message'] = $faultsChecked?->message; 
-        $data['resolved_by'] = $resolution?->resolved_by; 
-        $data['date_resolved'] = $resolution?->date_resolved; 
-        $data['status'] = $resolution?->status; 
-        
+        $data['fault_id'] = $faultsIds; 
         return $data;
     }
     public function afterSave(){
-            if(! is_null($this->data['fault_id'])){
-                $fault = Faults::firstWhere('id',$this->data['fault_id']);
-                
-                $this->record->faults()->sync($this->data['fault_id']);
-                   
-                $faultsChecked = $fault->faultschecked()->first();
-
-                $id = $faultsChecked ? $faultsChecked->id : 0;
-                $faultsChecked->updateOrCreate(['id'=>$id],[
-                    'checklist_id'  => $this->record->id,
-                    'message' => $this->data['message'],
-                ]);
-                if($this->data['status'] === 'Solved'){
-                    $faultsChecked=$fault->faultschecked->first();
-                    $resolution =$faultsChecked->resolution->first();
-                    $id = (is_null($faultsChecked->resolution) ? 0 : $faultsChecked->resolution->first()->id);
-                    $resolution->updateOrCreate(['id'=>$id],[
-                        'resolved_by' => $this->data['resolved_by'],
-                        'status' => "Solved",
-                        'date_resolved' =>  $this->data['date_resolved'],
-                    ]);
-                }else{
-                    $faultsChecked=$fault->faultschecked->first();
-                    $resolution =$faultsChecked->resolution->first();
-                    $id = (is_null($faultsChecked->resolution) ? 0 : $faultsChecked->resolution->first()->id);
-                   $resolution->updateOrCreate(['id'=>$id],[
-                        'status' => "Pending",
-                   ]);
-                }
-            }
+        $fault = Faults::firstWhere('id',$this->data['fault_id']);            
+        $this->record->faults()->sync($this->data['fault_id']);
+        
     }
 
 }

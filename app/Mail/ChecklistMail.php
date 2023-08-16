@@ -23,13 +23,10 @@ class ChecklistMail extends Mailable
      * Create a new message instance.
      */
     public $link;
-    public $faultchecked;
-    public $resolution;
-    public function __construct(Checklist $checklist,Resolution $resolution,FaultChecked $faultchecked, $link)
+
+    public function __construct(Checklist $checklist, $link)
     {
         $this->Checklist = $checklist;
-        $this->Resolution = $resolution;
-        $this->FaultChecked = $faultchecked;
         $this->link = $link;
     }
 
@@ -53,7 +50,12 @@ class ChecklistMail extends Mailable
      */
     public function content(): Content
     {
-            $faults = Faults::find($this->FaultChecked->fault_id)->first();
+            $checklists = $this->Checklist;
+            $faults = $checklists->faults;
+            $faultsIds = [];
+            foreach ($faults as $fault) {
+                $faultsIds[] = $fault->faults_identified;
+            } 
             $classes = Classes::find($this->Checklist->class_id);
             $buildings = $classes->building;
         return new Content(
@@ -61,9 +63,9 @@ class ChecklistMail extends Mailable
             with: [
                 'building_name' =>  $buildings->building_name,
                 'class_name' => $classes->class_name,
-                'faults_identified'=> $faults->faults_identified,                
-                'message' => $this->FaultChecked->message,
-                'status' => $this->Resolution->status,
+                'faults_identified'=> $faultsIds,                
+                'message' => $this->Checklist->message,
+                'status' => $this->Checklist->status,
                 'date_created' => $this->Checklist->date_created,
                 'link'=> $this->link,
             ],

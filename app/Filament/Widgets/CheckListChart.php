@@ -60,13 +60,13 @@ class CheckListChart extends ApexChartWidget
         $startDate = Carbon::parse($dateCreated)->startOfDay();
         $endDate = now();
 
-        $completedRequests = DB::table('resolutions')
+        $completedRequests = DB::table('checklists')
             ->where('status', 'solved')
             ->whereBetween('created_at', [$startDate, $endDate])
             ->whereNull('deleted_at')
             ->count();
 
-        $pendingRequests = DB::table('resolutions')
+        $pendingRequests = DB::table('checklists')
             ->where('status', 'pending')
             ->whereBetween('created_at', [$startDate, $endDate])
             ->whereNull('deleted_at')

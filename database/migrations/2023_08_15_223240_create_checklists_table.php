@@ -15,6 +15,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->default(0);
             $table->unsignedBigInteger('class_id')->nullable();
+            $table->longText('message')->nullable();
+            $table->date('date_resolved')->nullable();
+            $table->string('status')->nullable();
+            $table->string('resolved_by')->nullable();
             $table->date('date_created')->nullable();
             $table->timestamps();
             $table->softDeletes();

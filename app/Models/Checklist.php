@@ -22,13 +22,6 @@ class Checklist extends Model
     {
         return $this->belongsTo(Classes::class);
     }
-    public function faultschecked()
-    {
-        return $this->hasMany(FaultChecked::class,'checklist_id');
-    }
-    public function resolution(){
-        return $this->hasMany(Resolution::class);
-    }
     public function faults()
     {
         return $this->belongsToMany(Faults::class, 'checklist_fault','checklist_id','fault_id');
@@ -36,6 +29,10 @@ class Checklist extends Model
     protected $fillable = [
        'user_id',
        'class_id',
+       'message',
+       'date_resolved',
+       'resolved_by',
+       'status',
        'date_created',
         
     ];

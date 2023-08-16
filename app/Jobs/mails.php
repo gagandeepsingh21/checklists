@@ -33,9 +33,7 @@ class mails implements ShouldQueue
      */
     public function handle(): void
     {
-        $myChecklists = Checklist::whereHas('faultschecked.resolution', function($query){
-            $query->where('status','Pending');
-        })->get();
+        $myChecklists = Checklist::where('status','pending')->get();
         $checklists = [];
         $users = [];
         foreach($myChecklists as $checklist){
@@ -50,7 +48,7 @@ class mails implements ShouldQueue
             foreach (array_unique($users) as $user){
                 $ccMails = ['audiovisuals@strathmore.edu'];
             Mail::to($user)
-                ->cc($ccMails)
+               // ->cc($ccMails)
                 ->queue(new Reminder($checklists,route('filament.resources.checklists.index')));
             }
         }

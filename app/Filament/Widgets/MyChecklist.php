@@ -57,17 +57,17 @@ class MyChecklist extends BaseWidget
             ->searchable(),
         TextColumn::make('fault_id')
             ->label('Fault Identified')
-            ->getStateUsing(function($record){
-                if(count($record->faultschecked) < 1){
-                    return "NO Faults";
-                }else{
-                    // dd($record);
-                $faults = Faults::find($record?->faultschecked)->first();
-                // dd($faults);
-                //dd($record?->faultschecked);
-                return $faults?->faults_identified;
-                }
-            })
+            // ->getStateUsing(function($record){
+            //     if(count($record->faultschecked) < 1){
+            //         return "NO Faults";
+            //     }else{
+            //         // dd($record);
+            //     $faults = Faults::find($record?->faultschecked)->first();
+            //     // dd($faults);
+            //     //dd($record?->faultschecked);
+            //     return $faults?->faults_identified;
+            //     }
+            // })
             ->sortable()
             ->searchable()
             ->limit(10)
@@ -81,13 +81,6 @@ class MyChecklist extends BaseWidget
         BadgeColumn::make('status')
             ->sortable()
             ->searchable()
-            ->getStateUsing(function($record){
-
-                $faultschecked = $record->faultschecked->first();
-                $resolution = $faultschecked?->resolution?->first();
-                return $resolution?->status;
-                
-            })
             ->color(static function ($state): string {
                 if ($state === 'Pending') {
                     return 'danger';
