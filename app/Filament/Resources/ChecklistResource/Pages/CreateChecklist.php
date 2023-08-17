@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\ChecklistResource\Pages;
 
 use App\Models\Faults;
+use App\Models\Classes;
 use App\Models\Department;
 use App\Mail\ChecklistMail;
 use Filament\Pages\Actions;
@@ -21,6 +22,9 @@ class CreateChecklist extends CreateRecord
             $fault = Faults::firstWhere('id',$this->data['fault_id']);
             
             $this->record->faults()->attach($this->data['fault_id']);
+            $class = Classes::firstWhere('id',$this->data['class_id']);
+            
+            $this->record->class()->attach($this->data['class_id']);
             
 
     }

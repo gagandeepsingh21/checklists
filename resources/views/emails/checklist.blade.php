@@ -15,9 +15,15 @@ $faults = $date->faults;
 $faultsIds = [];
 foreach ($faults as $fault) {
 $faultsIds[] = $fault->faults_identified;
-} 
+}
+$classes = $date->class;
+$classesIds = [];
+foreach ($classes as $class) {
+$classesIds[] = $class->class_name;
+$buildings = \App\Models\Buildings::find($date?->class)->first();
+}
 @endphp
-|{{ $date->class->building->building_name }}|{{ $date->class->class_name }}| {{ implode(',', $faultsIds) }} |{{ $date->message }}|{{ $date->status }}|{{ $date->created_at }}|
+|{{ $buildings->building_name }}|{{ implode(',', $classesIds) }}| {{ implode(',', $faultsIds) }} |{{ $date->message }}|{{ $date->status }}|{{ $date->created_at }}|
 @endforeach
 </x-mail::table>
 

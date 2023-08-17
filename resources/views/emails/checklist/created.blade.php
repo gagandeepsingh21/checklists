@@ -10,7 +10,7 @@
 |                   |                                      |
 | ----------------- | ------------------------------------ |
 | **Building name** | {{ $building_name }}                  |
-| **Class Name**    | {{ $class_name }}                     |
+| **Class Name**    | {{ implode(',' ,$class_name) }}        |
 | **Faults Identified** | {{ implode(', ', $faults_identified) }}          |
 | **Message**       | {{ $message }}                         |
 | **Status**        | {{ $status }}                          |

@@ -17,6 +17,7 @@ use Filament\Resources\Table;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Card;
 use Filament\Tables\Actions\Action;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
@@ -71,6 +72,7 @@ class ChecklistResource extends Resource
                             
                             Select::make('class_id')
                                 ->label('Class Name')
+                                ->multiple()
                                 ->options(function ($get) {
                                     $building_id = $get('building_id');
                                     if (!empty($building_id)) {
@@ -93,10 +95,10 @@ class ChecklistResource extends Resource
                             ->default(Carbon::now()),
                         Select::make('resolved_by')
                             ->label('Resolved by')
-                            ->options(User::whereHas('roles',function($query){
-                                $query->where('name','Admin');
-                            })->pluck('name','id')),
+                            ->default(Auth::user()->name)
+                            ->options(User::pluck('name','name')->toArray()),
                         DatePicker::make('date_resolved')
+                            ->default(Carbon::now())
                             ->label('Date Resolved'),
                         Select::make('status')
                             ->default('Pending')
@@ -131,16 +133,16 @@ class ChecklistResource extends Resource
             ->columns([
                 // TextColumn::make('id')
                 //     ->sortable(),
-                TextColumn::make('class.building.building_name')
+                TextColumn::make('building.building_name')
                     ->label('Building Name')
-                //     ->getStateUsing(function($record){
-                //     if(is_null($record->class) ){
-                //         return "No Buildings";
-                //     }else{
-                //     $buildings = Buildings::find($record?->class)->first();
-                //     return $buildings?->building_name;
-                //     }
-                // })
+                    ->getStateUsing(function($record){
+                    if(is_null($record->class) ){
+                        return "No Buildings";
+                    }else{
+                    $buildings = Buildings::find($record?->class)->first();
+                    return $buildings?->building_name;
+                    }
+                })
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('class.class_name')

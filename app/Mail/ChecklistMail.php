@@ -56,13 +56,20 @@ class ChecklistMail extends Mailable
             foreach ($faults as $fault) {
                 $faultsIds[] = $fault->faults_identified;
             } 
-            $classes = Classes::find($this->Checklist->class_id);
-            $buildings = $classes->building;
+            $classes = $checklists->class;
+            $classesIds = [];
+            foreach ($classes as $class) {
+                $classesIds[] = $class->class_name;
+            }
+            $data['class_id'] = $classesIds;
+            // $buildings = $classes?->building;
+            // dd($buildings);
+            $buildings = Buildings::find($checklists?->class)->first();
         return new Content(
             markdown: 'emails.checklist.created',
             with: [
                 'building_name' =>  $buildings->building_name,
-                'class_name' => $classes->class_name,
+                'class_name' => $classesIds,
                 'faults_identified'=> $faultsIds,                
                 'message' => $this->Checklist->message,
                 'status' => $this->Checklist->status,

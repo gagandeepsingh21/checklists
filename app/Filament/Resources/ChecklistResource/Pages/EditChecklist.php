@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\ChecklistResource\Pages;
 
 use App\Models\Faults;
+use App\Models\Classes;
 use App\Models\Buildings;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\EditRecord;
@@ -26,11 +27,12 @@ class EditChecklist extends EditRecord
     {
         $checklist = $this->record;
         $classes = $checklist->class;
-        $buildings = $classes->building->first();   
+        //$buildings = $checklist->class->first();   
         // $resolution = $faultsChecked->resolution->first();
         $faults = $checklist->faults;
 
-
+        $buildings = Buildings::find($checklist?->class)->first();
+        $buildingname = $buildings?->building_name;
         $data['building_id'] = $buildings?->id; 
 
         $classesIds = [];
@@ -49,7 +51,12 @@ class EditChecklist extends EditRecord
     public function afterSave(){
         $fault = Faults::firstWhere('id',$this->data['fault_id']);            
         $this->record->faults()->sync($this->data['fault_id']);
-        
+        $class = Classes::firstWhere('id',$this->data['class_id']);
+        $mappedData = array_map(function($data){
+            return intval($data);
+        },$this->data['class_id']);
+        //dd($mappedData);
+        $this->record->class()->sync($mappedData);
     }
 
 }
