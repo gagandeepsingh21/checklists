@@ -7,7 +7,6 @@ use Illuminate\Foundation\Vite;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Filament\Navigation\NavigationGroup;
-use Illuminate\Contracts\Routing\UrlGenerator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,10 +21,11 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(UrlGenerator $url): void
+    public function boot(): void
     {
-        $url->forceScheme(config('app.scheme'));
-
+        if(env('FORCE_HTTPS',false)) { // Default value should be false for local server
+            URL::forceScheme('https');
+        }
         Filament::serving(function () {
             // Using Vite
             Filament::registerTheme(
