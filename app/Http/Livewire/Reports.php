@@ -41,65 +41,78 @@ class Reports extends Component implements Tables\Contracts\HasTable
 
             TextColumn::make('id')->sortable()->url(fn (Checklist $record):string => route('filament.resources.checklists.edit', ['record' => $record])),
             TextColumn::make('name')->sortable()->searchable()->url(fn (Checklist $record):string => route('filament.resources.checklists.edit', ['record' => $record])),
-            TextColumn::make('class.building.building_name')
-            ->label('Building Name')
-            ->getStateUsing(function($record){
-            if(is_null($record->class) ){
-                return "No Buildings";
-            }else{
-            $buildings = Buildings::find($record?->class)->first();
-            return $buildings?->building_name;
-            }
-        })
-            ->sortable()
-            ->searchable(),
-        TextColumn::make('class.class_name')
-            ->label('Class Name')
-            ->sortable()
-            ->searchable(),
-        TextColumn::make('faults.faults_identified')
-            ->label('Faults Identified')
-            ->sortable()
-            ->searchable()
-            ->toggleable(),
-        TextColumn::make('faultschecked.message')
-            ->label('Message')
-            ->sortable()
-            ->limit(40)
-            ->searchable()
-            ->toggleable(),
-        BadgeColumn::make('faultschecked.resolution.status')
-            ->sortable()
-            ->searchable()
-            ->getStateUsing(function($record){
+                // TextColumn::make('id')
+                //     ->sortable(),
+                TextColumn::make('building.building_name')
+                    ->label('Building Name')
+                    ->getStateUsing(function($record){
+                    if(is_null($record->class) ){
+                        return "No Buildings";
+                    }else{
+                    $buildings = Buildings::find($record?->class)->first();
+                    return $buildings?->building_name;
+                    }
+                })
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('class.class_name')
+                    ->label('Class Name')
+                    ->sortable()
+                    ->searchable(),
+                    TextColumn::make('faults.faults_identified')
+                    ->label('Faults Identified')
+                    // ->getStateUsing(function ($record) {
+                    //     if (count($record->faultschecked) < 1) {
+                    //         return "No Faults";
+                    //     } else {
+                    //     //     $faultschecked = $record->faultschecked->first();
+                    //     //    //dd($faultschecked?->fault_id);
+                    //         $faultsi = Faults::find($record->id)?->first();
+                    //         return $faultsi?->faults_identified;
+                    //     }
+                    // })
+                    ->sortable()
+                    ->searchable()
+                    ->limit(30)
+                    ->toggleable(),
+                TextColumn::make('message')
+                    ->label('Message')
+                    ->sortable()
+                    ->limit(10)
+                    ->searchable()
+                    ->toggleable(),
+                BadgeColumn::make('status')
+                    ->sortable()
+                    ->searchable()
+                    // ->getStateUsing(function($record){
 
-                $faultschecked = $record->faultschecked->first();
-                $resolution = $faultschecked?->resolution?->first();
-                return $resolution?->status;
-                
-            })
-            ->color(static function ($state): string {
-                if ($state === 'Pending') {
-                    return 'danger';
-                }else{
-                    return 'success';
-                }
-            }),
-        TextColumn::make('date_created')
-            ->label('Date Checked')
-            ->dateTime('d-m-Y')
-            ->sortable()
-            ->searchable()
-            ->toggleable(),
-        // TextColumn::make('created_at')
-        //     ->dateTime('d-m-Y')
-        //     ->sortable()
-        //     ->searchable()
-        //     ->toggleable(),
-        // TextColumn::make('deleted_at')
-        //     ->dateTime('d-m-Y')
-        //     ->sortable()
-        //     ->searchable(),
+                    //     $faultschecked = $record->faultschecked->first();
+                    //     $resolution = $faultschecked?->resolution?->first();
+                    //     return $resolution?->status;
+                        
+                    // })
+                    ->color(static function ($state): string {
+                        if ($state === 'Pending') {
+                            return 'danger';
+                        }else{
+                            return 'success';
+                        }
+                    }),
+                TextColumn::make('date_created')
+                    ->label('Date Checked')
+                    ->dateTime('d-m-Y')
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(),
+                TextColumn::make('created_at')
+                    ->dateTime('d-m-Y')
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(),
+                // TextColumn::make('deleted_at')
+                //     ->dateTime('d-m-Y')
+                //     ->sortable()
+                //     ->searchable()
             
         ];
     }

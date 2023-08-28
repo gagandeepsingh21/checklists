@@ -52,6 +52,11 @@ class ChecklistResource extends Resource
 
     protected static ?string $navigationGroup = 'Checklist';
 
+    protected static ?string $pluralModelLabel = 'Checklist With Faults';
+
+    protected static ?int $navigationSort = 4;
+
+
     //protected static ?string $recordTitleAttribute = 'faults_identified';
 
     public static function form(Form $form): Form
@@ -72,7 +77,6 @@ class ChecklistResource extends Resource
                             
                             Select::make('class_id')
                                 ->label('Class Name')
-                                ->multiple()
                                 ->options(function ($get) {
                                     $building_id = $get('building_id');
                                     if (!empty($building_id)) {
