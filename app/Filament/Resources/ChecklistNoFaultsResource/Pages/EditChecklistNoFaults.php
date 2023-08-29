@@ -22,7 +22,7 @@ class EditChecklistNoFaults extends EditRecord
         ];
     }
     protected function getRedirectUrl():string{
-        return $this->getResource()::getUrl('index');
+        return route('filament.resources.checklists.index');
     }
    
     protected function mutateFormDataBeforeFill(array $data): array
@@ -51,8 +51,8 @@ class EditChecklistNoFaults extends EditRecord
         return $data;
     }
     public function afterSave(){
-        $fault = Faults::firstWhere('id',$this->data['fault_id']);            
-        $this->record->faults()->sync($this->data['fault_id']);
+        // $fault = Faults::firstWhere('id',$this->data['fault_id']);            
+        // $this->record->faults()->sync($this->data['fault_id']);
         $class = Classes::firstWhere('id',$this->data['class_id']);
         $mappedData = array_map(function($data){
             return intval($data);

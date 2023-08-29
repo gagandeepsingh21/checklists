@@ -52,7 +52,7 @@ class ChecklistResource extends Resource
 
     protected static ?string $navigationGroup = 'Checklist';
 
-    protected static ?string $pluralModelLabel = 'Checklist With Faults';
+    // protected static ?string $pluralModelLabel = 'Checklist With Faults';
 
     protected static ?int $navigationSort = 4;
 

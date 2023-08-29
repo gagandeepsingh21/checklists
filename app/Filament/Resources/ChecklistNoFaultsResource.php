@@ -40,8 +40,9 @@ class ChecklistNoFaultsResource extends Resource
 
     protected static ?string $navigationGroup = 'Checklist';
 
-    protected static ?int $navigationSort = 5;
+    //protected static ?int $navigationSort = 5;
 
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {
@@ -89,7 +90,7 @@ class ChecklistNoFaultsResource extends Resource
                         ->default(Carbon::now())
                         ->label('Date Resolved'),
                     Select::make('status')
-                        ->default('Pending')
+                        ->default('Solved')
                         ->options([
                             'Pending' => ' Pending',
                             'Solved' => 'Solved',

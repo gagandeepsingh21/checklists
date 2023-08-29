@@ -39,8 +39,20 @@ class Reports extends Component implements Tables\Contracts\HasTable
     {
         return [
 
-            TextColumn::make('id')->sortable()->url(fn (Checklist $record):string => route('filament.resources.checklists.edit', ['record' => $record])),
-            TextColumn::make('name')->sortable()->searchable()->url(fn (Checklist $record):string => route('filament.resources.checklists.edit', ['record' => $record])),
+            TextColumn::make('id')->sortable()->url(function(Checklist $record){
+                if($record->faults()->exists()){
+                    return route('filament.resources.checklists.edit',$record);
+                }else{
+                    return route('filament.resources.checklist-no-faults.edit',$record);
+                }
+            }),
+            TextColumn::make('name')->sortable()->searchable()->url(function(Checklist $record){
+                if($record->faults()->exists()){
+                    return route('filament.resources.checklists.edit',$record);
+                }else{
+                    return route('filament.resources.checklist-no-faults.edit',$record);
+                }
+            }),
                 // TextColumn::make('id')
                 //     ->sortable(),
                 TextColumn::make('building.building_name')

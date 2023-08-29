@@ -43,6 +43,5 @@ class CreateChecklistNoFaults extends CreateRecord
         return parent::getCreatedNotification();
     }
     protected function getRedirectUrl():string{
-        return $this->getResource()::getUrl('index');
-    }
+        return route('filament.resources.checklists.index');    }
 }
