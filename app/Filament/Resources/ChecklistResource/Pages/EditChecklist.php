@@ -30,9 +30,12 @@ class EditChecklist extends EditRecord
         //$buildings = $checklist->class->first();   
         // $resolution = $faultsChecked->resolution->first();
         $faults = $checklist->faults;
+        $user = $checklist->user;
+
+        $data['user_id'] = $user?->id; 
 
         $buildings = Buildings::find($checklist?->class)->first();
-        $buildingname = $buildings?->building_name;
+        //$buildingname = $buildings?->building_name;
         $data['building_id'] = $buildings?->id; 
 
         $classesIds = [];
@@ -52,11 +55,11 @@ class EditChecklist extends EditRecord
         $fault = Faults::firstWhere('id',$this->data['fault_id']);            
         $this->record->faults()->sync($this->data['fault_id']);
         $class = Classes::firstWhere('id',$this->data['class_id']);
-        $mappedData = array_map(function($data){
-            return intval($data);
-        },$this->data['class_id']);
-        //dd($mappedData);
-        $this->record->class()->sync($mappedData);
+        // $mappedData = array_map(function($data){
+        //     return intval($data);
+        // },$this->data['class_id']);
+        // //dd($mappedData);
+        $this->record->class()->sync($class);
     }
 
 }

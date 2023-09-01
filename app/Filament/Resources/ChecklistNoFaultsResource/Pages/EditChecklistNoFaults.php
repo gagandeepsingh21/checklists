@@ -29,13 +29,16 @@ class EditChecklistNoFaults extends EditRecord
     {
         $checklist = $this->record;
         $classes = $checklist->class;
+        $user = $checklist->user;
         //$buildings = $checklist->class->first();   
         // $resolution = $faultsChecked->resolution->first();
         $faults = $checklist->faults;
 
         $buildings = Buildings::find($checklist?->class)->first();
-        $buildingname = $buildings?->building_name;
+        //$buildingname = $buildings?->building_name;
         $data['building_id'] = $buildings?->id; 
+        
+        $data['user_id'] = $user?->id; 
 
         $classesIds = [];
         foreach ($classes as $class) {

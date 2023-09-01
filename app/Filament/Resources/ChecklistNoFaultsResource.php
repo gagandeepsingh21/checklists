@@ -50,8 +50,8 @@ class ChecklistNoFaultsResource extends Resource
         ->schema([
             Card::make()
                 ->schema([ 
-                    Hidden::make('user_id')
-                        ->default(auth()->id()),
+                    // Hidden::make('user_id')
+                    //     ->default(auth()->id()),
                         Select::make('building_id')
                             ->label('Building Name')
                             ->options(Buildings::all()?->pluck('building_name', 'id')?->toArray())
@@ -82,13 +82,13 @@ class ChecklistNoFaultsResource extends Resource
                         ->label('Message'),
                     DatePicker::make('date_created')
                         ->default(Carbon::now()),
-                    Select::make('resolved_by')
-                        ->label('Resolved by')
-                        ->default(Auth::user()->name)
-                        ->options(User::pluck('name','name')->toArray()),
                     DatePicker::make('date_resolved')
                         ->default(Carbon::now())
                         ->label('Date Resolved'),
+                    Select::make('user_id')
+                        ->label('Resolved by')
+                        ->default(Auth::user()->name)
+                        ->options(User::pluck('name','id')->toArray()),
                     Select::make('status')
                         ->default('Solved')
                         ->options([
@@ -116,8 +116,8 @@ class ChecklistNoFaultsResource extends Resource
                 return $buildings?->building_name;
                 }
             })
-                ->sortable()
-                ->searchable(),
+                ->sortable(),
+                // ->searchable(),
             TextColumn::make('class.class_name')
                 ->label('Class Name')
                 ->sortable()

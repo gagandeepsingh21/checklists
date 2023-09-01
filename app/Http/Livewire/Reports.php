@@ -65,8 +65,8 @@ class Reports extends Component implements Tables\Contracts\HasTable
                     return $buildings?->building_name;
                     }
                 })
-                    ->sortable()
-                    ->searchable(),
+                    ->sortable(),
+                    // ->searchable(),
                 TextColumn::make('class.class_name')
                     ->label('Class Name')
                     ->sortable()
@@ -119,7 +119,7 @@ class Reports extends Component implements Tables\Contracts\HasTable
                 TextColumn::make('created_at')
                     ->dateTime('d-m-Y')
                     ->sortable()
-                    ->searchable()
+                    // ->searchable()
                     ->toggleable(),
                 // TextColumn::make('deleted_at')
                 //     ->dateTime('d-m-Y')

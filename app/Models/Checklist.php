@@ -30,7 +30,6 @@ class Checklist extends Model
        'user_id',
        'message',
        'date_resolved',
-       'resolved_by',
        'status',
        'date_created',
         
