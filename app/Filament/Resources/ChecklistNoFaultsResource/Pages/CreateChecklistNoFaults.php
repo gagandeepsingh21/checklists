@@ -1,27 +1,29 @@
 <?php
 
-namespace App\Filament\Resources\ChecklistResource\Pages;
+namespace App\Filament\Resources\ChecklistNoFaultsResource\Pages;
 
 use App\Models\Faults;
 use App\Models\Classes;
-use App\Models\Department;
 use App\Mail\ChecklistMail;
 use Filament\Pages\Actions;
+use App\Mail\ChecklistNoFault;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
-use App\Filament\Resources\ChecklistResource;
+use App\Filament\Resources\ChecklistNoFaultsResource;
 
-class CreateChecklist extends CreateRecord
+class CreateChecklistNoFaults extends CreateRecord
 {
-    protected static string $resource = ChecklistResource::class;
+    protected static string $resource = ChecklistNoFaultsResource::class;
+
+    protected static ?string $title = 'Create Checklist With no Faults';
 
     public function afterCreate(){
         // $this->record->class()->attach($this->data['class_id']);
-            $fault = Faults::firstWhere('id',$this->data['fault_id']);
+            // $fault = Faults::firstWhere('id',$this->data['fault_id']);
             
-            $this->record->faults()->attach($this->data['fault_id']);
+            // $this->record->faults()->attach($this->data['fault_id']);
             $class = Classes::firstWhere('id',$this->data['class_id']);
             
             $this->record->class()->attach($this->data['class_id']);
@@ -35,14 +37,11 @@ class CreateChecklist extends CreateRecord
  
             Mail::to(Auth::user()->email)
                 //->cc($ccMails)
-                ->send(new ChecklistMail($this->record, route('filament.resources.checklists.index')));
+                ->send(new ChecklistNoFault($this->record, route('filament.resources.checklists.index')));
             
     
         return parent::getCreatedNotification();
     }
-    
     protected function getRedirectUrl():string{
-        return $this->getResource()::getUrl('index');
-    }
-
+        return route('filament.resources.checklists.index');    }
 }

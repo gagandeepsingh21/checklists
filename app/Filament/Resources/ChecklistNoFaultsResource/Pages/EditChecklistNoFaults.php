@@ -1,17 +1,19 @@
 <?php
 
-namespace App\Filament\Resources\ChecklistResource\Pages;
+namespace App\Filament\Resources\ChecklistNoFaultsResource\Pages;
 
 use App\Models\Faults;
 use App\Models\Classes;
 use App\Models\Buildings;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\EditRecord;
-use App\Filament\Resources\ChecklistResource;
+use App\Filament\Resources\ChecklistNoFaultsResource;
 
-class EditChecklist extends EditRecord
+class EditChecklistNoFaults extends EditRecord
 {
-    protected static string $resource = ChecklistResource::class;
+    protected static string $resource = ChecklistNoFaultsResource::class;
+
+    protected static ?string $title = 'Edit Checklist With no Faults';
 
     protected function getActions(): array
     {
@@ -20,23 +22,23 @@ class EditChecklist extends EditRecord
         ];
     }
     protected function getRedirectUrl():string{
-        return $this->getResource()::getUrl('index');
+        return route('filament.resources.checklists.index');
     }
    
     protected function mutateFormDataBeforeFill(array $data): array
     {
         $checklist = $this->record;
         $classes = $checklist->class;
+        $user = $checklist->user;
         //$buildings = $checklist->class->first();   
         // $resolution = $faultsChecked->resolution->first();
         $faults = $checklist->faults;
-        $user = $checklist->user;
-
-        $data['user_id'] = $user?->id; 
 
         $buildings = Buildings::find($checklist?->class)->first();
         //$buildingname = $buildings?->building_name;
         $data['building_id'] = $buildings?->id; 
+        
+        $data['user_id'] = $user?->id; 
 
         $classesIds = [];
         foreach ($classes as $class) {
@@ -52,14 +54,13 @@ class EditChecklist extends EditRecord
         return $data;
     }
     public function afterSave(){
-        $fault = Faults::firstWhere('id',$this->data['fault_id']);            
-        $this->record->faults()->sync($this->data['fault_id']);
+        // $fault = Faults::firstWhere('id',$this->data['fault_id']);            
+        // $this->record->faults()->sync($this->data['fault_id']);
         $class = Classes::firstWhere('id',$this->data['class_id']);
-        // $mappedData = array_map(function($data){
-        //     return intval($data);
-        // },$this->data['class_id']);
-        // //dd($mappedData);
-        $this->record->class()->sync($class);
+        $mappedData = array_map(function($data){
+            return intval($data);
+        },$this->data['class_id']);
+        //dd($mappedData);
+        $this->record->class()->sync($mappedData);
     }
-
 }

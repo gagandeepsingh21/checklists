@@ -35,6 +35,9 @@ class FaultsResource extends Resource
     
     protected static ?string $navigationGroup = 'Checklist';
 
+    protected static ?int $navigationSort = 3;
+
+
     public static function form(Form $form): Form
     {
         $classes = Classes::pluck('class_name', 'id')->toArray();

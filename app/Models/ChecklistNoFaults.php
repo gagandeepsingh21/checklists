@@ -2,18 +2,17 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Models\Faults;
 use App\Models\Classes;
-use App\Models\Buildings;
-use App\Models\Resolution;
-use App\Models\FaultChecked;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Checklist extends Model
+class ChecklistNoFaults extends Model
 {
     use HasFactory,SoftDeletes;
+    protected $table = 'checklists';
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -34,6 +33,4 @@ class Checklist extends Model
        'date_created',
         
     ];
-   
-
 }

@@ -40,6 +40,9 @@ class ClassesResource extends Resource
     protected static ?string $navigationGroup = 'Checklist';
 
     protected static ?string $recordTitleAttribute = 'class_name';
+
+    protected static ?int $navigationSort = 2;
+
     
     public static function form(Form $form): Form
     {

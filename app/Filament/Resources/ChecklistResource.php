@@ -52,6 +52,11 @@ class ChecklistResource extends Resource
 
     protected static ?string $navigationGroup = 'Checklist';
 
+    // protected static ?string $pluralModelLabel = 'Checklist With Faults';
+
+    protected static ?int $navigationSort = 4;
+
+
     //protected static ?string $recordTitleAttribute = 'faults_identified';
 
     public static function form(Form $form): Form
@@ -61,8 +66,8 @@ class ChecklistResource extends Resource
             ->schema([
                 Card::make()
                     ->schema([ 
-                        Hidden::make('user_id')
-                            ->default(auth()->id()),
+                        // Hidden::make('user_id')
+                        //     ->default(auth()->id()),
                             Select::make('building_id')
                                 ->label('Building Name')
                                 ->options(Buildings::all()?->pluck('building_name', 'id')?->toArray())
@@ -72,7 +77,6 @@ class ChecklistResource extends Resource
                             
                             Select::make('class_id')
                                 ->label('Class Name')
-                                ->multiple()
                                 ->options(function ($get) {
                                     $building_id = $get('building_id');
                                     if (!empty($building_id)) {
@@ -93,13 +97,13 @@ class ChecklistResource extends Resource
                             ->label('Message'),
                         DatePicker::make('date_created')
                             ->default(Carbon::now()),
-                        Select::make('resolved_by')
-                            ->label('Resolved by')
-                            ->default(Auth::user()->name)
-                            ->options(User::pluck('name','name')->toArray()),
                         DatePicker::make('date_resolved')
                             ->default(Carbon::now())
                             ->label('Date Resolved'),
+                        Select::make('user_id')
+                            ->label('Resolved by')
+                            ->default(Auth::user()->name)
+                            ->options(User::pluck('name','id')->toArray()),
                         Select::make('status')
                             ->default('Pending')
                             ->options([
@@ -143,8 +147,8 @@ class ChecklistResource extends Resource
                     return $buildings?->building_name;
                     }
                 })
-                    ->sortable()
-                    ->searchable(),
+                    ->sortable(),
+                    // ->searchable(),
                 TextColumn::make('class.class_name')
                     ->label('Class Name')
                     ->sortable()
