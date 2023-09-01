@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('checklists', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->default(0);
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->longText('message')->nullable();
             $table->date('date_resolved')->nullable();
             $table->string('status')->nullable();

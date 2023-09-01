@@ -54,7 +54,7 @@ class ClassesResource extends Resource
 
                 Fieldset::make('Add Classes')
                     ->schema([
-                        Hidden::make('user_id')->default(auth()->id()),
+                        // Hidden::make('user_id')->default(auth()->id()),
                         BelongsToSelect::make('building_id')
                             ->label('Building Name')
                             ->options($buildings)

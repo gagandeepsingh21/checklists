@@ -22,7 +22,7 @@ class Classes extends Model
     }
     
     protected $fillable = [ 
-        'user_id',
+        // 'user_id',
         'building_id', 
         'class_name',    
      ];

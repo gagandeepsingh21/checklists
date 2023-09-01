@@ -102,7 +102,6 @@ class ChecklistResource extends Resource
                             ->label('Date Resolved'),
                         Select::make('user_id')
                             ->label('Resolved by')
-                            ->default(Auth::user()->name)
                             ->options(User::pluck('name','id')->toArray()),
                         Select::make('status')
                             ->default('Pending')
