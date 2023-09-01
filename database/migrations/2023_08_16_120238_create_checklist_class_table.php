@@ -15,7 +15,7 @@ return new class extends Migration
             $table->unsignedBigInteger('checklist_id')->nullable();
             $table->unsignedBigInteger('class_id')->nullable();
             $table->foreign('checklist_id')->references('id')->on('checklists')->onDelete('cascade');
-            $table->foreign('class_id')->references('id')->on('faults')->onDelete('cascade');
+            $table->foreign('class_id')->references('id')->on('classes')->onDelete('cascade');
             $table->primary(['checklist_id', 'class_id']); 
         });
     }
