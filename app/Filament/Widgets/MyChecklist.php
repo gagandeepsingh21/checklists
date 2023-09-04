@@ -5,6 +5,7 @@ namespace App\Filament\Widgets;
 use Closure;
 use Filament\Tables;
 use App\Models\Faults;
+use App\Models\Classes;
 use App\Models\Buildings;
 use App\Models\Checklist;
 use Illuminate\Support\Facades\Auth;
@@ -38,41 +39,45 @@ class MyChecklist extends BaseWidget
     {
         return [
 
-        TextColumn::make('building_name')
+            TextColumn::make('building.building_name')
+            ->label('Building Name')
             ->getStateUsing(function($record){
             if(is_null($record->class) ){
-                return "NO Buildings";
+                return "No Buildings";
             }else{
-                // dd($record);
             $buildings = Buildings::find($record?->class)->first();
-            // dd($faults);
-            //dd($record?->faultschecked);
             return $buildings?->building_name;
             }
         })
-            ->sortable()
-            ->searchable(),
+            ->sortable(),
+            // ->searchable(),
         TextColumn::make('class.class_name')
+            ->label('Class Name')
             ->sortable()
             ->searchable(),
-        TextColumn::make('fault_id')
-            ->label('Fault Identified')
-            // ->getStateUsing(function($record){
-            //     if(count($record->faultschecked) < 1){
-            //         return "NO Faults";
-            //     }else{
-            //         // dd($record);
-            //     $faults = Faults::find($record?->faultschecked)->first();
-            //     // dd($faults);
-            //     //dd($record?->faultschecked);
-            //     return $faults?->faults_identified;
+            TextColumn::make('faults.faults_identified')
+            ->label('Faults Identified')
+            // ->getStateUsing(function ($record) {
+            //     if (count($record->faultschecked) < 1) {
+            //         return "No Faults";
+            //     } else {
+            //     //     $faultschecked = $record->faultschecked->first();
+            //     //    //dd($faultschecked?->fault_id);
+            //         $faultsi = Faults::find($record->id)?->first();
+            //         return $faultsi?->faults_identified;
             //     }
             // })
             ->sortable()
             ->searchable()
-            ->limit(10)
+            ->limit(30)
             ->toggleable(),
-        TextColumn::make('faultschecked.message')
+        TextColumn::make('message')
+            ->label('Message')
+            ->sortable()
+            ->limit(10)
+            ->searchable()
+            ->toggleable(),
+        TextColumn::make('message')
             ->label('Message')
             ->sortable()
             ->limit(10)
