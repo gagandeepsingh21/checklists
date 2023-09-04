@@ -81,9 +81,9 @@ class Login extends \Filament\Http\Livewire\Auth\Login
             $loginLog->login_time = Carbon::now('Africa/Nairobi');
             $loginLog->save();
 
-            if ($user->roles->isEmpty()) {
-                $user->assignRole('Manager');
-            }
+            // if ($user->roles->isEmpty()) {
+            //     $user->assignRole('Manager');
+            // }
 
         } catch (BindException $exception) {
             throw ValidationException::withMessages([

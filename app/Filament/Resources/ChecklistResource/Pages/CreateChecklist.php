@@ -34,7 +34,7 @@ class CreateChecklist extends CreateRecord
         $ccMails = ['audiovisuals@strathmore.edu'];
  
             Mail::to(Auth::user()->email)
-                //->cc($ccMails)
+                ->cc($ccMails)
                 ->send(new ChecklistMail($this->record, route('filament.resources.checklists.index')));
             
     
