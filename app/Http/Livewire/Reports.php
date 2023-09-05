@@ -85,7 +85,8 @@ class Reports extends Component implements Tables\Contracts\HasTable
                     // })
                     ->sortable()
                     ->searchable()
-                    ->limit(30)
+                    ->visibleFrom('md')
+                    // ->limit(30)
                     ->toggleable(),
                 TextColumn::make('message')
                     ->label('Message')
