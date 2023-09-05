@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\User;
 use App\Models\Faults;
 use App\Models\Classes;
+use App\Models\Buildings;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,6 +18,10 @@ class ChecklistNoFaults extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function building()
+    {
+        return $this->belongsTo(Buildings::class);
+    }
     public function class()
     {
         return $this->belongsToMany(Classes::class, 'checklist_class','checklist_id','class_id');
@@ -27,6 +32,7 @@ class ChecklistNoFaults extends Model
     }
     protected $fillable = [
        'user_id',
+       'building_id',
        'message',
        'date_resolved',
        'status',

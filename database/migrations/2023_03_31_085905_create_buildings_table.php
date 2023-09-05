@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('buildings', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->default(0);
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->string('building_name');
             $table->timestamps();
             $table->softDeletes();

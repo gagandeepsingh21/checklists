@@ -10,6 +10,7 @@ use App\Models\Resolution;
 use App\Models\FaultChecked;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Envelope;
@@ -24,10 +25,13 @@ class ChecklistMail extends Mailable
      */
     public $link;
 
-    public function __construct(Checklist $checklist, $link)
+    public $building_id;
+
+    public function __construct(Checklist $checklist, $link, $building_id)
     {
         $this->Checklist = $checklist;
         $this->link = $link;
+        $this->building_id = $building_id;
     }
 
     /**
@@ -64,7 +68,8 @@ class ChecklistMail extends Mailable
             $data['class_id'] = $classesIds;
             // $buildings = $classes?->building;
             // dd($buildings);
-            $buildings = Buildings::find($checklists?->class)->first();
+            $buildings = Buildings::find($this->building_id);
+            //Log::info($buildings);
         return new Content(
             markdown: 'emails.checklist.created',
             with: [

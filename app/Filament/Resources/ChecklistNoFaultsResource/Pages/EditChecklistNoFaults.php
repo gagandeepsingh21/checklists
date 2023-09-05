@@ -34,9 +34,14 @@ class EditChecklistNoFaults extends EditRecord
         // $resolution = $faultsChecked->resolution->first();
         $faults = $checklist->faults;
 
-        $buildings = Buildings::find($checklist?->class)->first();
-        //$buildingname = $buildings?->building_name;
-        $data['building_id'] = $buildings?->id; 
+        if(is_null($checklist->class) ){
+            $buildings = Buildings::find($checklist?->class)->first();
+            //$buildingname = $buildings?->building_name;
+            $data['building_id'] = $buildings?->id; 
+            }else{
+                $building = $checklist->building;
+                $data['building_id'] = $building?->id; 
+            }
         
         $data['user_id'] = $user?->id; 
 

@@ -102,6 +102,7 @@ class ChecklistResource extends Resource
                             ->label('Date Resolved'),
                         Select::make('user_id')
                             ->label('Resolved by')
+                            // ->default(Auth::user()->name)
                             ->options(User::pluck('name','id')->toArray()),
                         Select::make('status')
                             ->default('Pending')
@@ -136,14 +137,18 @@ class ChecklistResource extends Resource
             ->columns([
                 // TextColumn::make('id')
                 //     ->sortable(),
-                TextColumn::make('building.building_name')
+                TextColumn::make('building_id')
                     ->label('Building Name')
                     ->getStateUsing(function($record){
                     if(is_null($record->class) ){
                         return "No Buildings";
-                    }else{
+                    }else if(is_null($record->class) ){
                     $buildings = Buildings::find($record?->class)->first();
                     return $buildings?->building_name;
+                    }else{
+                        $building = $record->building;
+                        return $building?->building_name;
+
                     }
                 })
                     ->sortable(),

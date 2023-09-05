@@ -33,11 +33,14 @@ class EditChecklist extends EditRecord
         $user = $checklist->user;
 
         $data['user_id'] = $user?->id; 
-
+        if(is_null($checklist->class) ){
         $buildings = Buildings::find($checklist?->class)->first();
         //$buildingname = $buildings?->building_name;
         $data['building_id'] = $buildings?->id; 
-
+        }else{
+            $building = $checklist->building;
+            $data['building_id'] = $building?->id; 
+        }
         $classesIds = [];
         foreach ($classes as $class) {
             $classesIds[] = $class->id;

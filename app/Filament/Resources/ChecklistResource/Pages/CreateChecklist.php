@@ -35,7 +35,7 @@ class CreateChecklist extends CreateRecord
  
             Mail::to(Auth::user()->email)
                 ->cc($ccMails)
-                ->send(new ChecklistMail($this->record, route('filament.resources.checklists.index')));
+                ->send(new ChecklistMail($this->record, route('filament.resources.checklists.index'),$this->data['building_id']));
             
     
         return parent::getCreatedNotification();

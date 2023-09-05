@@ -106,18 +106,21 @@ class ChecklistNoFaultsResource extends Resource
         ->columns([
             // TextColumn::make('id')
             //     ->sortable(),
-            TextColumn::make('building.building_name')
-                ->label('Building Name')
-                ->getStateUsing(function($record){
-                if(is_null($record->class) ){
-                    return "No Buildings";
-                }else{
-                $buildings = Buildings::find($record?->class)->first();
-                return $buildings?->building_name;
-                }
-            })
-                ->sortable(),
-                // ->searchable(),
+            TextColumn::make('building_id')
+            ->label('Building Name')
+            ->getStateUsing(function($record){
+            if(is_null($record->class) ){
+                return "No Buildings";
+            }else if(is_null($record->class) ){
+            $buildings = Buildings::find($record?->class)->first();
+            return $buildings?->building_name;
+            }else{
+                $building = $record->building;
+                return $building?->building_name;
+
+            }
+        })
+            ->sortable(),
             TextColumn::make('class.class_name')
                 ->label('Class Name')
                 ->sortable()

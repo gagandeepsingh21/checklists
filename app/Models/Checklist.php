@@ -18,6 +18,10 @@ class Checklist extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function building()
+    {
+        return $this->belongsTo(Buildings::class);
+    }
     public function class()
     {
         return $this->belongsToMany(Classes::class, 'checklist_class','checklist_id','class_id');
@@ -28,6 +32,7 @@ class Checklist extends Model
     }
     protected $fillable = [
        'user_id',
+       'building_id',
        'message',
        'date_resolved',
        'status',
