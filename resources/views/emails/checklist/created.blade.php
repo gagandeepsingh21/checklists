@@ -1,6 +1,6 @@
 <x-mail::message>
 <h1>Checklist Created</h1>
-<p>Greetings {{ Auth::user()->name}},</p>
+<p>Greetings Team,</p>
 
 
 <p>Your Checklist has been created on <b>{{ $date_created }}</b>.
