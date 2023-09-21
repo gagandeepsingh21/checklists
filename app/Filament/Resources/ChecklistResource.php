@@ -156,7 +156,8 @@ class ChecklistResource extends Resource
                 TextColumn::make('class.class_name')
                     ->label('Class Name')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->limit(20),
                     TextColumn::make('faults.faults_identified')
                     ->label('Faults Identified')
                     // ->getStateUsing(function ($record) {
@@ -171,7 +172,7 @@ class ChecklistResource extends Resource
                     // })
                     ->sortable()
                     ->searchable()
-                    ->limit(30)
+                    ->limit(20)
                     ->toggleable(),
                 TextColumn::make('message')
                     ->label('Message')

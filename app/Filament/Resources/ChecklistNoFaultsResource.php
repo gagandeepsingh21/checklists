@@ -71,7 +71,6 @@ class ChecklistNoFaultsResource extends Resource
                                     return [];
                                 }
                             })
-                            ->limit(20)
                             ->visible(fn ($get) => !empty($get('building_id'))),
 
                     // Select::make('fault_id')
@@ -125,7 +124,8 @@ class ChecklistNoFaultsResource extends Resource
             TextColumn::make('class.class_name')
                 ->label('Class Name')
                 ->sortable()
-                ->searchable(),
+                ->searchable()
+                ->limit(20),
                 // TextColumn::make('faults.faults_identified')
                 // ->label('Faults Identified')
                 // // ->getStateUsing(function ($record) {
