@@ -16,7 +16,7 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
-    'scheme' => env('APP_SCHEME','http'),
+    'scheme' => env('https'),
     'base_port' => env('APP_BASE_PORT',443),
     // 'wss_port' => env('WSS_PORT',443),
 
