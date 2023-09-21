@@ -157,7 +157,7 @@ class ChecklistResource extends Resource
                     ->label('Class Name')
                     ->sortable()
                     ->searchable()
-                    ->limit(20),
+                    ->limit(15),
                     TextColumn::make('faults.faults_identified')
                     ->label('Faults Identified')
                     // ->getStateUsing(function ($record) {
