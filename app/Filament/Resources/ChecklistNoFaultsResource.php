@@ -71,6 +71,7 @@ class ChecklistNoFaultsResource extends Resource
                                     return [];
                                 }
                             })
+                            ->limit(20)
                             ->visible(fn ($get) => !empty($get('building_id'))),
 
                     // Select::make('fault_id')
