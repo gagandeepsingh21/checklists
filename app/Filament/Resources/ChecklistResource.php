@@ -172,7 +172,6 @@ class ChecklistResource extends Resource
                     // })
                     ->sortable()
                     ->searchable()
-                    ->limit(20)
                     ->toggleable(),
                 TextColumn::make('message')
                     ->label('Message')
