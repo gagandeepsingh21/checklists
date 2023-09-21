@@ -5,6 +5,7 @@ namespace App\Providers;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Vite;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\ServiceProvider;
 use Filament\Navigation\NavigationGroup;
 
@@ -21,13 +22,13 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
+    public function boot(UrlGenerator $url): void
     {
-        // $url->forceScheme(config('app.scheme'));
-
-        if(env('FORCE_HTTPS',false)) { // Default value should be false for local server
-            URL::forceScheme('https');
-        }
+        $url->forceScheme(config('app.scheme'));
+    
+        // if(env('FORCE_HTTPS',false)) { // Default value should be false for local server
+        //     URL::forceScheme('https');
+        // }
         Filament::serving(function () {
             // Using Vite
             Filament::registerTheme(
