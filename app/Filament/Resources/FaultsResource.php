@@ -55,7 +55,7 @@ class FaultsResource extends Resource
         return $table
             ->columns([
 
-                TextColumn::make('id')->sortable(),
+                // TextColumn::make('id')->sortable(),
                 TextColumn::make('faults_identified')->sortable()->searchable(),
                 //TextColumn::make('deleted_at')->sortable()->searchable()->toggleable(),
 
