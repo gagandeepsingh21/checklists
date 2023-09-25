@@ -18,12 +18,12 @@ class ChecklistNoFault extends Mailable
     /**
      * Create a new message instance.
      */
-    public $link;
+    //public $link;
 
-    public function __construct(ChecklistNoFaults $checklist, $link)
+    public function __construct(ChecklistNoFaults $checklist)
     {
         $this->ChecklistNoFaults = $checklist;
-        $this->link = $link;
+       // $this->link = $link;
     }
 
     public function envelope(): Envelope
@@ -67,7 +67,7 @@ class ChecklistNoFault extends Mailable
                 'message' => $this->ChecklistNoFaults->message,
                 'status' => $this->ChecklistNoFaults->status,
                 'date_created' => $this->ChecklistNoFaults->date_created,
-                'link'=> $this->link,
+                'id'=> $this->ChecklistNoFaults->id,
             ],
         );
     }

@@ -216,6 +216,7 @@ class ChecklistNoFaultsResource extends Resource
             'index' => Pages\ListChecklistNoFaults::route('/'),
             'create' => Pages\CreateChecklistNoFaults::route('/create'),
             'edit' => Pages\EditChecklistNoFaults::route('/{record}/edit'),
+            'view' => Pages\ViewChecklistNoFaults::route('/{record}/view'),
         ];
     }    
 }

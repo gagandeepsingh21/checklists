@@ -18,7 +18,7 @@
 @endcomponent
 
 
-<x-mail::button :url=$link>
+<x-mail::button :url="\App\Filament\Resources\ChecklistResource::getUrl('view', ['record' => $id])">
 View Checklist
 </x-mail::button>
 

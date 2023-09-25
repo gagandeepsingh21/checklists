@@ -23,14 +23,14 @@ class ChecklistMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public $link;
+    //public $link;
 
     public $building_id;
 
-    public function __construct(Checklist $checklist, $link, $building_id)
+    public function __construct(Checklist $checklist, $building_id)
     {
         $this->Checklist = $checklist;
-        $this->link = $link;
+        //$this->link = $link;
         $this->building_id = $building_id;
     }
 
@@ -79,7 +79,7 @@ class ChecklistMail extends Mailable
                 'message' => $this->Checklist->message,
                 'status' => $this->Checklist->status,
                 'date_created' => $this->Checklist->date_created,
-                'link'=> $this->link,
+                'id'=> $this->Checklist->id,
             ],
         );
     }

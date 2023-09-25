@@ -37,7 +37,7 @@ class CreateChecklistNoFaults extends CreateRecord
  
             Mail::to(Auth::user()->email)
                 ->cc($ccMails)
-                ->send(new ChecklistNoFault($this->record, route('filament.resources.checklists.index')));
+                ->send(new ChecklistNoFault($this->record));
             
     
         return parent::getCreatedNotification();
