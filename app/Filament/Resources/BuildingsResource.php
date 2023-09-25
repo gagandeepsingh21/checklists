@@ -53,8 +53,8 @@ class BuildingsResource extends Resource
     {
         return $table
             ->columns([
-                        TextColumn::make('id')
-                            ->sortable(),
+                        // TextColumn::make('id')
+                        //     ->sortable(),
                         TextColumn::make('building_name')
                             ->sortable()
                             ->searchable(),
