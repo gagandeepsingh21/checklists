@@ -33,8 +33,8 @@ class CreateChecklist extends CreateRecord
     { 
         $ccMails = ['audiovisuals@strathmore.edu'];
  
-            Mail::to(Auth::user()->email)
-                ->cc($ccMails)
+            Mail::to($ccMails)
+                // ->cc($ccMails)
                 ->send(new ChecklistMail($this->record,$this->data['building_id']));
             
     
