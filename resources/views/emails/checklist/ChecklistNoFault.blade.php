@@ -23,5 +23,4 @@ View Checklist
 
 Best Regards,<br>
 <i>ICT CheckList Team</i>
-<!-- {{ config('app.name') }} -->
 </x-mail::message>
