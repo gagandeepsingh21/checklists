@@ -33,7 +33,13 @@ class CreateChecklistNoFaults extends CreateRecord
 
     protected function getCreatedNotification(): ?Notification
     { 
-        $ccMails = ['audiovisuals@strathmore.edu'];
+        $ccMails = ['bogutu@strathmore.edu'
+        ,'lsally@strathmore.edu'
+        ,'mkihara@strathmore.edu'
+        ,'msuka@strathmore.edu'
+        ,'bulonza.ntumwa@strathmore.edu'
+        ,'mngesa@strathmore.edu'
+        ,'john.kibuna@strathmore.edu'];
  
             Mail::to(Auth::user()->email)
                 ->cc($ccMails)
