@@ -19,7 +19,7 @@
 
 
 <x-mail::button :url="\App\Filament\Resources\ChecklistResource::getUrl('view', ['record' => $id])">
-View Checklist
+View Checklist 
 </x-mail::button>
 
 Best Regards,<br>
