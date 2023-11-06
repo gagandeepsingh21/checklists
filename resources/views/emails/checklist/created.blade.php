@@ -1,10 +1,8 @@
 <x-mail::message>
 <h1>Checklist Created</h1>
 <p>Greetings Team,</p>
-
-
 <p>Your Checklist has been created on <b>{{ $date_created }}</b>.
-    Please have a look below for more information.
+Please have a look below for more information.
 </p>
 @component('mail::table')
 |                   |                                      |
@@ -16,12 +14,9 @@
 | **Status**        | {{ $status }}                          |
 | **Date Created**  | {{ $date_created }}                    |
 @endcomponent
-
-
 <x-mail::button :url="\App\Filament\Resources\ChecklistResource::getUrl('view', ['record' => $id])">
 View Checklist 
 </x-mail::button>
-
 Best Regards,<br>
 <i>ICT CheckList Team</i>
 </x-mail::message>
